@@ -22,6 +22,8 @@ let tasksarr ='{"taskarr":['+
 '{"Incomplete": "Complete", "Task": "Wash Windows", "update": "waiting for Ladders", "startDate": "2024-10-15","completeDate": "2024-10-24"},'+
 '{"Incomplete": "Incomplete", "Task": "Wash Windows", "update": "waiting for Ladders", "startDate": "2024-10-15","completeDate": "2024-10-24"}]}'; 
 
+newTask()
+
 // get event for new task button
 const sbntEl = document.getElementById("newTaskButton");
 sbntEl.addEventListener("click", newTask);
@@ -39,25 +41,19 @@ const sballEl = document.getElementById("All");
 sballEl.addEventListener("click", listAll);
 
 function listOpen(){
-  var list="Open";
   document.getElementById("Open").style.backgroundColor="red";
   document.getElementById("Closed").style.backgroundColor="#2d3e50";
   document.getElementById("All").style.backgroundColor="#2d3e50";
-  console.log(list)
   }
 function listClosed() {
-  var list="Complete";
   document.getElementById("Open").style.backgroundColor="#2d3e50";
   document.getElementById("Closed").style.backgroundColor="red";
   document.getElementById("All").style.backgroundColor="#2d3e50";  
-  console.log(list)
   }
 function listAll() {
-  var list="All";
   document.getElementById("Open").style.backgroundColor="#2d3e50";
   document.getElementById("Closed").style.backgroundColor="#2d3e50";
   document.getElementById("All").style.backgroundColor="red";  
-  console.log(list)
   }
 
 
@@ -76,7 +72,6 @@ drawTable(obj)
 
 // draw the table with tasks
 function drawTable(obj) {
-// clear table
 
 // obj.tasksarr.push(taskadd)
 
@@ -108,16 +103,12 @@ switch(list){
           cell4.innerHTML = obj.taskarr[i].startDate;
           cell5.innerHTML = obj.taskarr[i].completeDate;
 // Depending if task complete or not add correct buttons
-        if (obj.taskarr[i].Incomplete == "Complete") {
-          cell6.innerHTML = "Incomplete";
-        }
-        else {
-        cell6.innerHTML = "Complete Delete";       
+          cell6.innerHTML = "Complete Update";       
         }
       }
-    }
+    
     break;
-
+    
     case list="Closed":
     for(let i=0; obj.taskarr.length > i; i++) {
         if(obj.taskarr[i].Incomplete=="Complete") {
@@ -137,16 +128,11 @@ switch(list){
           cell4.innerHTML = obj.taskarr[i].startDate;
           cell5.innerHTML = obj.taskarr[i].completeDate;
     // Depending if task complete or not add correct buttons
-        if (obj.taskarr[i].Incomplete == "Complete") {
-          cell6.innerHTML = "Incomplete";
-          }
-        else {
-          cell6.innerHTML = "Complete Delete";       
-          }
-        }
+          cell6.innerHTML = "Incomplete Delete";
     }
+}
     break;
-
+    
     case list="All":
     for(let i=0; obj.taskarr.length > i; i++) {
     // Insert Row at End
@@ -166,10 +152,10 @@ switch(list){
       cell5.innerHTML = obj.taskarr[i].completeDate;
     // Depending if task complete or not add correct buttons
       if (obj.taskarr[i].Incomplete == "Complete") {
-          cell6.innerHTML = "Incomplete";
+          cell6.innerHTML = "Incomplete Delete";
         }
         else {
-          cell6.innerHTML = "Complete Delete";       
+          cell6.innerHTML = "Complete Update";       
         }
     }
 }
