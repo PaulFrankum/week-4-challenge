@@ -1,7 +1,13 @@
 
+// default all with red backgroud
+document.getElementById("Open").style.backgroundColor="#2d3e50";
+document.getElementById("Closed").style.backgroundColor="#2d3e50";
+document.getElementById("All").style.backgroundColor="red"; 
+
 // This loads stored object array.
-const storedTasks = JSON.parse(localStorage.getItem("tasksarr")) || [];
-console.log(storedTasks)
+const taskarr = JSON.parse(localStorage.getItem("tasksarr")) || [];
+
+console.log(taskarr)
 
 // get input values
 const sEl = document.getElementById("complete");
@@ -32,11 +38,28 @@ sbclEl.addEventListener("click", listClosed);
 const sballEl = document.getElementById("All");
 sballEl.addEventListener("click", listAll);
 
-function listOpen(){var list="Open"; console.log(list)}
-function listClosed(){var list="Complete"; console.log(list)}
-function listAll(){var list="All"; console.log(list)}
+function listOpen(){
+  var list="Open";
+  document.getElementById("Open").style.backgroundColor="red";
+  document.getElementById("Closed").style.backgroundColor="#2d3e50";
+  document.getElementById("All").style.backgroundColor="#2d3e50";
+  console.log(list)
+  }
+function listClosed() {
+  var list="Complete";
+  document.getElementById("Open").style.backgroundColor="#2d3e50";
+  document.getElementById("Closed").style.backgroundColor="red";
+  document.getElementById("All").style.backgroundColor="#2d3e50";  
+  console.log(list)
+  }
+function listAll() {
+  var list="All";
+  document.getElementById("Open").style.backgroundColor="#2d3e50";
+  document.getElementById("Closed").style.backgroundColor="#2d3e50";
+  document.getElementById("All").style.backgroundColor="red";  
+  console.log(list)
+  }
 
-console.log(list)
 
 // function for when a new task button clicked
 function newTask() {
@@ -55,38 +78,100 @@ drawTable(obj)
 function drawTable(obj) {
 // clear table
 
-// Add new task to endoff object array
 // obj.tasksarr.push(taskadd)
 
-// for each record add row and populate
-for(let i=0; obj.taskarr.length > i; i++) {
+// check color of buton to pick if to print all closed open
+if (document.getElementById("All").style.backgroundColor == "red"){list="All"}
+if (document.getElementById("Open").style.backgroundColor == "red"){list="Open"}
+if (document.getElementById("Closed").style.backgroundColor == "red"){list="Closed"}
+
+
 // decides what list to print ie all complete or incomplete
-console.log(list)
-if(list == "Open"){
+switch(list){
+    case list="Open":
+        console.log("test")
+      for(let i=0; obj.taskarr.length > i; i++) {
+        if(obj.taskarr[i].Incomplete=="Incomplete") {
 // Insert Row at End
-  var table = document.getElementById("task-table");
-  var row = table.insertRow(-1);
-  var cell1 = row.insertCell(0);
-  var cell2 = row.insertCell(1);
-  var cell3 = row.insertCell(2);
-  var cell4 = row.insertCell(3);
-  var cell5 = row.insertCell(4);
-  var cell6 = row.insertCell(5);
+          var table = document.getElementById("task-table");
+          var row = table.insertRow(-1);
+          var cell1 = row.insertCell(0);
+          var cell2 = row.insertCell(1);
+          var cell3 = row.insertCell(2);
+          var cell4 = row.insertCell(3);
+          var cell5 = row.insertCell(4);
+          var cell6 = row.insertCell(5);
 //  insert data into row 
-  cell1.innerHTML = obj.taskarr[i].Incomplete;
-  cell2.innerHTML = obj.taskarr[i].Task;
-  cell3.innerHTML = obj.taskarr[i].update;
-  cell4.innerHTML = obj.taskarr[i].startDate;
-  cell5.innerHTML = obj.taskarr[i].completeDate;
+          cell1.innerHTML = obj.taskarr[i].Incomplete;
+          cell2.innerHTML = obj.taskarr[i].Task;
+          cell3.innerHTML = obj.taskarr[i].update;
+          cell4.innerHTML = obj.taskarr[i].startDate;
+          cell5.innerHTML = obj.taskarr[i].completeDate;
 // Depending if task complete or not add correct buttons
-  if (obj.taskarr[i].Incomplete == "Complete") {
-      cell6.innerHTML = "Incomplete";
+        if (obj.taskarr[i].Incomplete == "Complete") {
+          cell6.innerHTML = "Incomplete";
+        }
+        else {
+        cell6.innerHTML = "Complete Delete";       
+        }
+      }
     }
-    else {
-      cell6.innerHTML = "Complete Delete";       
+    break;
+
+    case list="Closed":
+    for(let i=0; obj.taskarr.length > i; i++) {
+        if(obj.taskarr[i].Incomplete=="Complete") {
+    // Insert Row at End
+          var table = document.getElementById("task-table");
+          var row = table.insertRow(-1);
+          var cell1 = row.insertCell(0);
+          var cell2 = row.insertCell(1);
+          var cell3 = row.insertCell(2);
+          var cell4 = row.insertCell(3);
+          var cell5 = row.insertCell(4);
+          var cell6 = row.insertCell(5);
+    //  insert data into row 
+          cell1.innerHTML = obj.taskarr[i].Incomplete;
+          cell2.innerHTML = obj.taskarr[i].Task;
+          cell3.innerHTML = obj.taskarr[i].update;
+          cell4.innerHTML = obj.taskarr[i].startDate;
+          cell5.innerHTML = obj.taskarr[i].completeDate;
+    // Depending if task complete or not add correct buttons
+        if (obj.taskarr[i].Incomplete == "Complete") {
+          cell6.innerHTML = "Incomplete";
+          }
+        else {
+          cell6.innerHTML = "Complete Delete";       
+          }
+        }
     }
-  }
- }
+    break;
+
+    case list="All":
+    for(let i=0; obj.taskarr.length > i; i++) {
+    // Insert Row at End
+      var table = document.getElementById("task-table");
+      var row = table.insertRow(-1);
+      var cell1 = row.insertCell(0);
+      var cell2 = row.insertCell(1);
+      var cell3 = row.insertCell(2);
+      var cell4 = row.insertCell(3);
+      var cell5 = row.insertCell(4);
+      var cell6 = row.insertCell(5);
+    //  insert data into row 
+      cell1.innerHTML = obj.taskarr[i].Incomplete;
+      cell2.innerHTML = obj.taskarr[i].Task;
+      cell3.innerHTML = obj.taskarr[i].update;
+      cell4.innerHTML = obj.taskarr[i].startDate;
+      cell5.innerHTML = obj.taskarr[i].completeDate;
+    // Depending if task complete or not add correct buttons
+      if (obj.taskarr[i].Incomplete == "Complete") {
+          cell6.innerHTML = "Incomplete";
+        }
+        else {
+          cell6.innerHTML = "Complete Delete";       
+        }
+    }
 }
 
 // Clear input Values to deafult 
@@ -98,6 +183,6 @@ document.getElementById('completeDate').value="2024-10-21";
 
 // And finally this will now Save and Update the tasks to the "localStorage".
 localStorage.setItem("tasks", JSON.stringify(tasksarr)); 
-console.log(tasksarr)
 
+}
 }
