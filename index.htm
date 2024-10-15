@@ -15,7 +15,7 @@
         <header class="header">
             <input type="text" placeholder="Search tasks..." class="search-bar">
             <div class="user-avatar">
-                <img src="https://i.pravatar.cc/50?u=student" alt="User Avatar">
+                <img src="./assets/bigpic.jpg" alt="User Avatar">
             </div>
         </header>
 
@@ -23,11 +23,9 @@
         <aside class="sidebar">
             <nav>
                 <ul>
-                    <li><a href="#">Dashboard</a></li>
-                    <li><a href="#">Tasks</a></li>
-                    <li><a href="#">Completed</a></li>
-                    <li><a href="#">Settings</a></li>
-                    <li><a href="#">Logout</a></li>
+                    <li><button id="Open">Open Tasks</button></li>
+                    <li><button id="Closed">Closed Tasks</button></li>
+                    <li><button id="All">All</button></li>                    
                 </ul>
             </nav>
         </aside>
@@ -35,34 +33,34 @@
         <!-- Main Content -->
         <main class="main-content">
             <h2>Task List</h2>
-            <table class="task-table">
+            <div class="widget">
+                <input type="text" id="complete" Value="Incomplete"/>
+                <input type="text" id="newTask"/>
+                <input type="text" id="update"/>
+                <input type="date" id="startDate" value="2024-10-14"/>
+                <input type="date" id="completeDate" value="2024-10-21" />
+                <button id="newTaskButton">New Task</button>
+            </div>
+
+            <table class="task-table" id="task-table">
                 <thead>
                     <tr>
                         <th>Status</th>
                         <th>Task</th>
+                        <th>Update</th>
                         <th>Date Created</th>
+                        <th>Deadline</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Example rows -->
                     <tr>
-                        <td>Incomplete</td>
-                        <td>Complete user dashboard</td>
-                        <td>2024-09-23</td>
-                        <td><button class="complete-btn">Mark as Complete</button></td>
                     </tr>
-                    <tr>
-                        <td>Incomplete</td>
-                        <td>Fix sidebar layout issues</td>
-                        <td>2024-09-22</td>
-                        <td><button class="complete-btn">Mark as Complete</button></td>
-                    </tr>
-                    <!-- Repeat for 10+ tasks -->
                 </tbody>
             </table>
         </main>
     </div>
 </body>
+<script src="./assets/js/script.js"></script>
 
 </html>
