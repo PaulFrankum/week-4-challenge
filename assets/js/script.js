@@ -4,13 +4,13 @@ document.getElementById("Closed").style.backgroundColor="#2d3e50";
 document.getElementById("All").style.backgroundColor="red"; 
 
 // This loads data from local storage.
-let tasksarr = JSON.parse(localStorage.getItem("tasksarr")) || [];
+// let tasksarr = JSON.parse(localStorage.getItem("tasksarr")) || [];
 
 // this was used as test data during coding please delete when project complete
-//  let tasksarr ='{"taskarr":['+
-  // '{"Incomplete": "Incomplete", "Task": "do washing", "update": "waiting for washing powder", "startDate": "2024-10-13","completeDate": "2024-10-17"},'+
-  // '{"Incomplete": "Complete", "Task": "Wash Windows", "update": "waiting for Ladders", "startDate": "2024-10-15","completeDate": "2024-10-24"},'+
-  // '{"Incomplete": "Incomplete", "Task": "Wash Windows", "update": "waiting for Ladders", "startDate": "2024-10-15","completeDate": "2024-10-24"}]}'; 
+ let tasksarr ='{"taskarr":['+
+  '{"Incomplete": "Incomplete", "Task": "do washing", "update": "waiting for washing powder", "startDate": "2024-10-13","completeDate": "2024-10-17"},'+
+  '{"Incomplete": "Complete", "Task": "Wash Windows", "update": "waiting for Ladders", "startDate": "2024-10-15","completeDate": "2024-10-24"},'+
+  '{"Incomplete": "Incomplete", "Task": "Wash Windows", "update": "waiting for Ladders", "startDate": "2024-10-15","completeDate": "2024-10-24"}]}'; 
 
 // get event for new task button
 const newTaskButtonEl = document.getElementById("newTaskButton");
@@ -32,7 +32,8 @@ allButtonEl.addEventListener("click", listAll);
 const searchButtonEl = document.getElementById("searchBar");
 searchButtonEl.addEventListener("keydown", function (e) {if (e.key === 'Enter') {searchBar()}});
 
-drawTable(tasksarr)
+const obj = JSON.parse(tasksarr);
+drawTable(obj)
 inputValueReset()
 
 // Clear Input value and put default values
@@ -64,7 +65,6 @@ function searchBar(){
 // 
 // 
 // 
-  console.log(search+" Test")
 }
 
 // clear table
@@ -89,13 +89,17 @@ var tasksAdd = {
   "completeDate": document.getElementById("completeDate").value
 }
 var objAdd = JSON.stringify(tasksAdd)
-const tasksarrStr = JSON.stringify(tasksarr)
-let objNew = tasksarrStr.slice(0, -3) + "}, " + objAdd + "]}"
+let objNew = tasksarr.slice(0, -3) + "}, " + objAdd + "]}"
+
+
+console.log(tasksarr)
 
 // clear values and call redraw task table 
   clearTable()
   inputValueReset()
+
   const obj = JSON.parse(objNew);
+  console.log(obj)
   drawTable(obj) 
 }
   
@@ -190,8 +194,7 @@ function drawTable(obj) {
       }
 // And finally this will now Save the tasks to the "localStorage".
   localStorage.clear();
-  localStorage.setItem("tasksarr", JSON.stringify(obj));
-  const tasksarr = JSON.parse(localStorage.getItem("obj")) || []; 
+  localStorage.setItem("tasksarr", JSON.stringify(tasksarr)); 
 }
 
 function listOpen(){
