@@ -90,16 +90,11 @@ var tasksAdd = {
 }
 var objAdd = JSON.stringify(tasksAdd)
 const tasksarrStr = JSON.stringify(tasksarr)
-let objNew = tasksarrStr.slice(0, -3) + ", " + objAdd + "]}"
-
-console.log(objAdd)
-console.log(typeof objNew)
-console.log(tasksarr)
+let objNew = tasksarrStr.slice(0, -3) + "}, " + objAdd + "]}"
 
 // clear values and call redraw task table 
   clearTable()
   inputValueReset()
-
   const obj = JSON.parse(objNew);
   drawTable(obj) 
 }
@@ -195,7 +190,8 @@ function drawTable(obj) {
       }
 // And finally this will now Save the tasks to the "localStorage".
   localStorage.clear();
-  localStorage.setItem("tasksarr", JSON.stringify(tasksarr)); 
+  localStorage.setItem("tasksarr", JSON.stringify(obj));
+  const tasksarr = JSON.parse(localStorage.getItem("obj")) || []; 
 }
 
 function listOpen(){
