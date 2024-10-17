@@ -7,59 +7,65 @@ document.getElementById("All").style.backgroundColor="red";
 let tasksarr = JSON.parse(localStorage.getItem("tasksarr")) || [];
 
 // this was used as test data during coding please delete when project complete
-// let tasksarr ='{"taskarr":['+
-//  '{"Incomplete": "Incomplete", "Task": "do washing", "update": "waiting for washing powder", "startDate": "2024-10-13","completeDate": "2024-10-17"},'+
-//  '{"Incomplete": "Complete", "Task": "Wash Windows", "update": "waiting for Ladders", "startDate": "2024-10-15","completeDate": "2024-10-24"},'+
-//  '{"Incomplete": "Incomplete", "Task": "Wash Windows", "update": "waiting for Ladders", "startDate": "2024-10-15","completeDate": "2024-10-24"}]}'; 
+//  let tasksarr ='{"taskarr":['+
+  // '{"Incomplete": "Incomplete", "Task": "do washing", "update": "waiting for washing powder", "startDate": "2024-10-13","completeDate": "2024-10-17"},'+
+  // '{"Incomplete": "Complete", "Task": "Wash Windows", "update": "waiting for Ladders", "startDate": "2024-10-15","completeDate": "2024-10-24"},'+
+  // '{"Incomplete": "Incomplete", "Task": "Wash Windows", "update": "waiting for Ladders", "startDate": "2024-10-15","completeDate": "2024-10-24"}]}'; 
 
 // get event for new task button
-const sbntEl = document.getElementById("newTaskButton");
-sbntEl.addEventListener("click", newTask);
+const newTaskButtonEl = document.getElementById("newTaskButton");
+newTaskButtonEl.addEventListener("click", newTask);
 
 // get event for open task button
-const sbopEl = document.getElementById("Open");
-sbopEl.addEventListener("click", listOpen);
+const openButtonEl = document.getElementById("Open");
+openButtonEl.addEventListener("click", listOpen);
 
 // get event for closed task button
-const sbclEl = document.getElementById("Closed");
-sbclEl.addEventListener("click", listClosed);
+const closedButton = document.getElementById("Closed");
+closedButton.addEventListener("click", listClosed);
 
 // get event for all task button
-const sballEl = document.getElementById("All");
-sballEl.addEventListener("click", listAll);
+const allButtonEl = document.getElementById("All");
+allButtonEl.addEventListener("click", listAll);
 
 // get event for search enter
-const searchEl = document.getElementById("searchBar");
-searchEl.addEventListener("keydown", function (e) {if (e.key === 'Enter') {searchBar()}});
+const searchButtonEl = document.getElementById("searchBar");
+searchButtonEl.addEventListener("keydown", function (e) {if (e.key === 'Enter') {searchBar()}});
 
-const obj = JSON.parse(tasksarr);
-drawTable(obj)
+drawTable(tasksarr)
+inputValueReset()
 
 // Clear Input value and put default values
 function inputValueReset(){
 //Gets today and put in correct format
-  var now = new Date();
-  var date = now.toLocaleString();
-  const month = now.getMonth()+1;
-  const day = now.getDate();
-  const day2 = now.getDate()+7;
-  const year = now.getFullYear();
-  var date= year+"-"+month+"-"+day;
-  var date2= year+"-"+month+"-"+day2;
+  date = dateRetieve(Number(0))
+  date2 = dateRetieve(Number(7))
 // Clear input Values to deafult 
-  document.getElementById('complete').value="Incomplete";
-  document.getElementById('newTask').value="";
-  document.getElementById('update').value="";
+  document.getElementById('complete').value= "Incomplete";
+  document.getElementById('newTask').value= "";
+  document.getElementById('update').value= "";
   document.getElementById('startDate').value= date;
-  document.getElementById('completeDate').value=date2;
+  document.getElementById('completeDate').value= date2;
 }
+
+// retieve date and format and add number of days requested
+function dateRetieve(addDays){
+var now = new Date();
+const month = now.getMonth()+1;
+const day = now.getDate()+Number(addDays);
+const year = now.getFullYear();
+return year+"-"+month+"-"+day;
+}
+
 // Search function
 function searchBar(){
   const search = document.getElementById("searchBar").value;
+// Ready for code to search
+// 
+// 
+// 
   console.log(search+" Test")
-
 }
-
 
 // clear table
 function clearTable() {
@@ -74,26 +80,27 @@ function clearTable() {
 
 // function for when a new task button clicked
 function newTask() {
-  // get input values
-  const sE1 = document.getElementById("complete").value;
-  const sE2 = document.getElementById("newTask").value;
-  const sE3 = document.getElementById("update").value;
-  const sE4 = document.getElementById("startDate").value;
-  const sE5 = document.getElementById("completeDate").value;
-  
-  // add new task to obj array tasksarr
-  var tasksAdd = {"Incomplete": "Incomplete", "Task": "zzzzzzzzzzzzz", "update": "zzzzzzzzzzzzzzzzzzzzzzz", "startDate": "2024-10-13","completeDate": "2024-10-17"}
-  const objArr = JSON.parse(tasksAdd);
-  var tasksarr2 = tasksarr.concat(tasksAdd);
-  
-  console.log(tasksAdd)
-  console.log(tasksarr2)
-  
+// get input values into tasksAdd
+var tasksAdd = {
+  "Incomplete": document.getElementById("complete").value,
+  "Task": document.getElementById("newTask").value,
+  "update": document.getElementById("update").value,
+  "startDate": document.getElementById("startDate").value,
+  "completeDate": document.getElementById("completeDate").value
+}
+var objAdd = JSON.stringify(tasksAdd)
+const tasksarrStr = JSON.stringify(tasksarr)
+let objNew = tasksarrStr.slice(0, -3) + ", " + objAdd + "]}"
 
-  // clear values and call redraw table function
+console.log(objAdd)
+console.log(typeof objNew)
+console.log(tasksarr)
+
+// clear values and call redraw task table 
   clearTable()
   inputValueReset()
-  const obj = JSON.parse(tasksarr);
+
+  const obj = JSON.parse(objNew);
   drawTable(obj) 
 }
   
@@ -117,7 +124,10 @@ function drawTable(obj) {
           var cell4 = row.insertCell(3);
           var cell5 = row.insertCell(4);
           var cell6 = row.insertCell(5);
-//  insert data into row 
+// chnage color red if overdue code 
+
+// end of code
+          //  insert data into row 
           cell1.innerHTML = obj.taskarr[i].Incomplete;
           cell2.innerHTML = obj.taskarr[i].Task;
           cell3.innerHTML = obj.taskarr[i].update;
@@ -165,6 +175,9 @@ function drawTable(obj) {
         var cell4 = row.insertCell(3);
         var cell5 = row.insertCell(4);
         var cell6 = row.insertCell(5);
+// chnage color red if overdue code 
+
+// end of code
 //  insert data into row 
         cell1.innerHTML = obj.taskarr[i].Incomplete;
         cell2.innerHTML = obj.taskarr[i].Task;
@@ -173,10 +186,10 @@ function drawTable(obj) {
         cell5.innerHTML = obj.taskarr[i].completeDate;
 // Depending if task complete or not add correct buttons
         if (obj.taskarr[i].Incomplete == "Complete") {
-            cell6.innerHTML = "Incomplete Update";
+            cell6.innerHTML = "Incomplete Delete";
           }
           else {
-              cell6.innerHTML = "Complete Delete";       
+              cell6.innerHTML = "Complete Update";       
           }
         }
       }
