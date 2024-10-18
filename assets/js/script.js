@@ -70,8 +70,9 @@ function clearTable() {
   numberOfRows = document.getElementById("task-table").rows.length;
   if(numberOfRows>2){
     for(i=numberOfRows; i>1; i-- ){
-     var row = table.deleteRow(1);
+      var row = table.deleteRow(1);
     }
+  // if(document.getElementById("task-table").rows.length=2) {var row = table.deleteRow(1);}  
   }
 }
 
@@ -189,7 +190,8 @@ todayDate=dateRetieve(0)
         cell5.innerHTML = obj.taskarr[i].completeDate;
 // Depending if task complete or not add correct buttons
         if (obj.taskarr[i].Incomplete == "Complete") {
-            cell6.innerHTML = "Incomplete Delete";
+          cell6.innerHTML = "Incomplete Delete";
+//   <cell><button class="complete">Incomplete</button><button class="update">Update</button>
           }
           else {
             cell6.innerHTML = "Complete Update";       
@@ -200,7 +202,8 @@ todayDate=dateRetieve(0)
           cell3.style.backgroundColor = "#ff0000";
           cell4.style.backgroundColor = "#ff0000";
           cell5.style.backgroundColor = "#ff0000";
-          cell6.style.backgroundColor = "#ff0000";   
+          cell6.style.backgroundColor = "#ff0000";
+          console.log("The Cheques in the post")   
         }
       }
 // end of red code
@@ -212,6 +215,7 @@ todayDate=dateRetieve(0)
   localStorage.clear();
   localStorage.setItem("tasksarr", JSON.stringify(tasksarr));
 }
+
 // function to decide what to list in task list
 // only display open
 function listOpen(){
