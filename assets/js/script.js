@@ -32,7 +32,6 @@ searchButtonEl.addEventListener("keydown", function (e) {if (e.key === 'Enter') 
   drawTable(obj)
   inputValueReset()
 
-
 // Clear Input value and put default values
 function inputValueReset(){
 //Gets today and put in correct format
@@ -110,7 +109,7 @@ function drawTable(obj) {
   if (document.getElementById("Open").style.backgroundColor == "red"){list="Open"}
   if (document.getElementById("Closed").style.backgroundColor == "red"){list="Closed"}
 // decides what list to print ie all complete or incomplete
-todayDate=dateRetieve(0)
+  todayDate=dateRetieve(0)
   switch(list){
     case list="Open":
       for(let i=0; obj.taskarr.length > i; i++){
@@ -143,16 +142,20 @@ todayDate=dateRetieve(0)
           cell5.innerHTML = obj.taskarr[i].completeDate;
 // Depending if task complete or not add correct buttons
           var x = document.createElement("BUTTON");
+          x.classList.add("complete");
           var t = document.createTextNode("Complete");
           x.appendChild(t);
           cell6.appendChild(x);
           x = document.createElement("BUTTON");
+          x.classList.add("update");
           t = document.createTextNode("Update");
           x.appendChild(t);
           cell6.appendChild(x);   
+          row.querySelector(".update").addEventListener("click", update)
+          row.querySelector(".complete").addEventListener("click", complete)
         }
       }
-    break;
+      break;
 
     case list="Closed":
       for(let i=0; obj.taskarr.length > i; i++){
@@ -174,13 +177,17 @@ todayDate=dateRetieve(0)
           cell5.innerHTML = obj.taskarr[i].completeDate;
   // Depending if task complete or not add correct buttons
           var x = document.createElement("BUTTON");
+          x.classList.add("incomplete");
           var t = document.createTextNode("Incomplete");
           x.appendChild(t);
           cell6.appendChild(x);
           x = document.createElement("BUTTON");
+          x.classList.add("delete");
           t = document.createTextNode("Delete");
           x.appendChild(t);
           cell6.appendChild(x);
+          row.querySelector(".delete").addEventListener("click", deleteTask)
+          row.querySelector(".incomplete").addEventListener("click", incomplete)
         }   
       }
       break
@@ -205,23 +212,32 @@ todayDate=dateRetieve(0)
 // Depending if task complete or not add correct buttons
         if (obj.taskarr[i].Incomplete == "Complete") {
           var x = document.createElement("BUTTON");
+          x.classList.add("incomplete");
           var t = document.createTextNode("Incomplete");
           x.appendChild(t);
           cell6.appendChild(x);
           x = document.createElement("BUTTON");
+          x.classList.add("delete"); 
           t = document.createTextNode("Delete");
           x.appendChild(t);
           cell6.appendChild(x);
+          row.querySelector(".incomplete").addEventListener("click", incomplete)
+          row.querySelector(".delete").addEventListener("click", deleteTask)
           }
           else {
             var x = document.createElement("BUTTON");
+            x.classList.add("complete");
             var t = document.createTextNode("Complete");
             x.appendChild(t);
             cell6.appendChild(x);
             x = document.createElement("BUTTON");
+            x.classList.add("update");
             t = document.createTextNode("Update");
             x.appendChild(t);
             cell6.appendChild(x);
+            row.querySelector(".update").addEventListener("click", update)
+            row.querySelector(".complete").addEventListener("click", complete)
+
 // change color red if overdue code 
         if(obj.taskarr[i].completeDate<todayDate){
           cell1.style.backgroundColor = "#ff0000";
@@ -231,16 +247,35 @@ todayDate=dateRetieve(0)
           cell5.style.backgroundColor = "#ff0000";
           cell6.style.backgroundColor = "#ff0000";
           console.log("The Cheques in the post")   
+// end of red code
         }
       }
-// end of red code
     }
   }
- 
-// And finally this will now Save the tasks to the "localStorage".
+
+  // And finally this will now Save the tasks to the "localStorage".
   tasksarr = JSON.stringify(obj)
   localStorage.clear();
   localStorage.setItem("tasksarr", JSON.stringify(tasksarr));
+}
+// Swap Incomplet to Complete
+function complete(whichButton) {
+  console.log("Complete function " + whichButton)
+}
+
+// Swap Complete to incomplete
+function incomplete(whichButton) {
+  console.log("Incomplete Button Pushed " + whichButton)
+}
+
+// Update Task
+function update(whichButton) {
+  console.log("update Button Pushed " + whichButton)
+}
+
+// Delete Task
+function deleteTask(whichButton) {
+  console.log("delete Button Pushed " + whichButton)
 }
 
 // function to decide what to list in task list
