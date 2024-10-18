@@ -4,13 +4,9 @@ document.getElementById("Closed").style.backgroundColor="#2d3e50";
 document.getElementById("All").style.backgroundColor="red"; 
 
 // This loads data from local storage.
-// let tasksarr = JSON.parse(localStorage.getItem("tasksarr")) || [];
-
+let tasksarr = JSON.parse(localStorage.getItem("tasksarr")) || [];
 // this was used as test data during coding please delete when project complete
- let tasksarr ='{"taskarr":['+
-  '{"Incomplete": "Incomplete", "Task": "do washing", "update": "waiting for washing powder", "startDate": "2024-10-13","completeDate": "2024-10-17"},'+
-  '{"Incomplete": "Complete", "Task": "Wash Windows", "update": "waiting for Ladders", "startDate": "2024-10-15","completeDate": "2024-10-24"},'+
-  '{"Incomplete": "Incomplete", "Task": "Wash Windows", "update": "waiting for Ladders", "startDate": "2024-10-15","completeDate": "2024-10-24"}]}'; 
+// let tasksarr ='{"taskarr":['+ '{"Incomplete": "Incomplete", "Task": "do washing", "update": "waiting for washing powder", "startDate": "2024-10-13","completeDate": "2024-10-17"},'+'{"Incomplete": "Complete", "Task": "Wash Windows", "update": "waiting for Ladders", "startDate": "2024-10-15","completeDate": "2024-10-24"},'+'{"Incomplete": "Incomplete", "Task": "Wash Windows", "update": "waiting for Ladders", "startDate": "2024-10-15","completeDate": "2024-10-24"}]}'; 
 
 // get event for new task button
 const newTaskButtonEl = document.getElementById("newTaskButton");
@@ -32,9 +28,10 @@ allButtonEl.addEventListener("click", listAll);
 const searchButtonEl = document.getElementById("searchBar");
 searchButtonEl.addEventListener("keydown", function (e) {if (e.key === 'Enter') {searchBar()}});
 
-const obj = JSON.parse(tasksarr);
-drawTable(obj)
-inputValueReset()
+  const obj = JSON.parse(tasksarr);
+  drawTable(obj)
+  inputValueReset()
+
 
 // Clear Input value and put default values
 function inputValueReset(){
@@ -80,6 +77,12 @@ function clearTable() {
 
 // function for when a new task button clicked
 function newTask() {
+// if list is on complete change to open otherwise task will not show
+if (document.getElementById("Closed").style.backgroundColor == "red"){
+  document.getElementById("Open").style.backgroundColor="red";
+  document.getElementById("Closed").style.backgroundColor="#2d3e50";
+  document.getElementById("All").style.backgroundColor="#2d3e50";
+}  
 // get input values into tasksAdd
 var tasksAdd = {
   "Incomplete": document.getElementById("complete").value,
@@ -88,19 +91,15 @@ var tasksAdd = {
   "startDate": document.getElementById("startDate").value,
   "completeDate": document.getElementById("completeDate").value
 }
+// add to obj
 var objAdd = JSON.stringify(tasksAdd)
-let objNew = tasksarr.slice(0, -3) + "}, " + objAdd + "]}"
-
-
-console.log(tasksarr)
+tasksarr = tasksarr.slice(0, -3) + "}, " + objAdd + "]}"
 
 // clear values and call redraw task table 
-  clearTable()
-  inputValueReset()
-
-  const obj = JSON.parse(objNew);
-  console.log(obj)
-  drawTable(obj) 
+clearTable()
+inputValueReset()
+const obj = JSON.parse(tasksarr);
+drawTable(obj) 
 }
   
 //Redraw Table
@@ -110,6 +109,7 @@ function drawTable(obj) {
   if (document.getElementById("Open").style.backgroundColor == "red"){list="Open"}
   if (document.getElementById("Closed").style.backgroundColor == "red"){list="Closed"}
 // decides what list to print ie all complete or incomplete
+todayDate=dateRetieve(0)
   switch(list){
     case list="Open":
       for(let i=0; obj.taskarr.length > i; i++){
@@ -123,9 +123,17 @@ function drawTable(obj) {
           var cell4 = row.insertCell(3);
           var cell5 = row.insertCell(4);
           var cell6 = row.insertCell(5);
-// chnage color red if overdue code 
-
-// end of code
+// change color red if overdue code 
+          if(obj.taskarr[i].completeDate<todayDate){
+            cell1.style.backgroundColor = "#ff0000";
+            cell2.style.backgroundColor = "#ff0000";
+            cell3.style.backgroundColor = "#ff0000";
+            cell4.style.backgroundColor = "#ff0000";
+            cell5.style.backgroundColor = "#ff0000";
+            cell6.style.backgroundColor = "#ff0000";          
+          }
+// end of red code
+//  insert data into row 
           //  insert data into row 
           cell1.innerHTML = obj.taskarr[i].Incomplete;
           cell2.innerHTML = obj.taskarr[i].Task;
@@ -136,8 +144,8 @@ function drawTable(obj) {
           cell6.innerHTML = "Complete Update";       
         }
       }
-      break;
-      
+    break;
+
     case list="Closed":
       for(let i=0; obj.taskarr.length > i; i++){
         if(obj.taskarr[i].Incomplete=="Complete") {
@@ -158,11 +166,10 @@ function drawTable(obj) {
           cell5.innerHTML = obj.taskarr[i].completeDate;
   // Depending if task complete or not add correct buttons
           cell6.innerHTML = "Incomplete Delete"
-          // <ul><li><button id="Incomplete">Reopen</button></li><li><button id="delete">delete</button></li></ul>;
         }   
       }
-      break;
-      
+    break;
+
     case list="All":
       for(let i=0; obj.taskarr.length > i; i++){
  // Insert Row at End
@@ -174,10 +181,7 @@ function drawTable(obj) {
         var cell4 = row.insertCell(3);
         var cell5 = row.insertCell(4);
         var cell6 = row.insertCell(5);
-// chnage color red if overdue code 
-
-// end of code
-//  insert data into row 
+  //  insert data into row 
         cell1.innerHTML = obj.taskarr[i].Incomplete;
         cell2.innerHTML = obj.taskarr[i].Task;
         cell3.innerHTML = obj.taskarr[i].update;
@@ -188,15 +192,28 @@ function drawTable(obj) {
             cell6.innerHTML = "Incomplete Delete";
           }
           else {
-              cell6.innerHTML = "Complete Update";       
-          }
+            cell6.innerHTML = "Complete Update";       
+// change color red if overdue code 
+        if(obj.taskarr[i].completeDate<todayDate){
+          cell1.style.backgroundColor = "#ff0000";
+          cell2.style.backgroundColor = "#ff0000";
+          cell3.style.backgroundColor = "#ff0000";
+          cell4.style.backgroundColor = "#ff0000";
+          cell5.style.backgroundColor = "#ff0000";
+          cell6.style.backgroundColor = "#ff0000";   
         }
       }
+// end of red code
+    }
+  }
+ 
 // And finally this will now Save the tasks to the "localStorage".
+  tasksarr = JSON.stringify(obj)
   localStorage.clear();
-  localStorage.setItem("tasksarr", JSON.stringify(tasksarr)); 
+  localStorage.setItem("tasksarr", JSON.stringify(tasksarr));
 }
-
+// function to decide what to list in task list
+// only display open
 function listOpen(){
   document.getElementById("Open").style.backgroundColor="red";
   document.getElementById("Closed").style.backgroundColor="#2d3e50";
@@ -205,7 +222,7 @@ function listOpen(){
   const obj = JSON.parse(tasksarr);
   drawTable(obj)
 }
-
+// only display closed
 function listClosed() {
   document.getElementById("Open").style.backgroundColor="#2d3e50";
   document.getElementById("Closed").style.backgroundColor="red";
@@ -214,7 +231,7 @@ function listClosed() {
   const obj = JSON.parse(tasksarr);
   drawTable(obj) 
 }
-
+// only display all
 function listAll() {
   document.getElementById("Open").style.backgroundColor="#2d3e50";
   document.getElementById("Closed").style.backgroundColor="#2d3e50";
