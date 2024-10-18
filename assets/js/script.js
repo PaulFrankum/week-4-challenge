@@ -142,7 +142,14 @@ todayDate=dateRetieve(0)
           cell4.innerHTML = obj.taskarr[i].startDate;
           cell5.innerHTML = obj.taskarr[i].completeDate;
 // Depending if task complete or not add correct buttons
-          cell6.innerHTML = "Complete Update";       
+          var x = document.createElement("BUTTON");
+          var t = document.createTextNode("Complete");
+          x.appendChild(t);
+          cell6.appendChild(x);
+          x = document.createElement("BUTTON");
+          t = document.createTextNode("Update");
+          x.appendChild(t);
+          cell6.appendChild(x);   
         }
       }
     break;
@@ -166,10 +173,17 @@ todayDate=dateRetieve(0)
           cell4.innerHTML = obj.taskarr[i].startDate;
           cell5.innerHTML = obj.taskarr[i].completeDate;
   // Depending if task complete or not add correct buttons
-          cell6.innerHTML = "Incomplete Delete"
+          var x = document.createElement("BUTTON");
+          var t = document.createTextNode("Incomplete");
+          x.appendChild(t);
+          cell6.appendChild(x);
+          x = document.createElement("BUTTON");
+          t = document.createTextNode("Delete");
+          x.appendChild(t);
+          cell6.appendChild(x);
         }   
       }
-    break;
+      break
 
     case list="All":
       for(let i=0; obj.taskarr.length > i; i++){
@@ -190,11 +204,24 @@ todayDate=dateRetieve(0)
         cell5.innerHTML = obj.taskarr[i].completeDate;
 // Depending if task complete or not add correct buttons
         if (obj.taskarr[i].Incomplete == "Complete") {
-          cell6.innerHTML = "Incomplete Delete";
-//   <cell><button class="complete">Incomplete</button><button class="update">Update</button>
+          var x = document.createElement("BUTTON");
+          var t = document.createTextNode("Incomplete");
+          x.appendChild(t);
+          cell6.appendChild(x);
+          x = document.createElement("BUTTON");
+          t = document.createTextNode("Delete");
+          x.appendChild(t);
+          cell6.appendChild(x);
           }
           else {
-            cell6.innerHTML = "Complete Update";       
+            var x = document.createElement("BUTTON");
+            var t = document.createTextNode("Complete");
+            x.appendChild(t);
+            cell6.appendChild(x);
+            x = document.createElement("BUTTON");
+            t = document.createTextNode("Update");
+            x.appendChild(t);
+            cell6.appendChild(x);
 // change color red if overdue code 
         if(obj.taskarr[i].completeDate<todayDate){
           cell1.style.backgroundColor = "#ff0000";

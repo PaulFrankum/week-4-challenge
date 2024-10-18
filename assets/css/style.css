@@ -120,6 +120,7 @@ body {
 
 button {
     padding: 10px 20px;
+    margin: 0px 0px 0px 10px;
     background-color: #2d3e50;
     color: white;
     border: none;
