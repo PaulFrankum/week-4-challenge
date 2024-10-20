@@ -6,7 +6,7 @@ document.getElementById("All").style.backgroundColor="red";
 // This loads data from local storage.
 let tasksarr = JSON.parse(localStorage.getItem("tasksarr")) || [];
 // this was used as test data during coding please delete when project complete
-// let tasksarr ='{"taskarr":['+ '{"Incomplete": "Incomplete", "Task": "do washing", "update": "waiting for washing powder", "startDate": "2024-10-13","completeDate": "2024-10-17"},'+'{"Incomplete": "Complete", "Task": "Wash Windows", "update": "waiting for Ladders", "startDate": "2024-10-15","completeDate": "2024-10-24"},'+'{"Incomplete": "Incomplete", "Task": "Wash Windows", "update": "waiting for Ladders", "startDate": "2024-10-15","completeDate": "2024-10-24"}]}'; 
+// let tasksarr ='{"Incomplete": "Incomplete", "Task": "do washing", "update": "waiting for washing powder", "startDate": "2024-10-13","completeDate": "2024-10-17"},'+'{"Incomplete": "Complete", "Task": "Wash Windows", "update": "waiting for Ladders", "startDate": "2024-10-15","completeDate": "2024-10-24"},'+'{"Incomplete": "Incomplete", "Task": "Wash Windows", "update": "waiting for Ladders", "startDate": "2024-10-15","completeDate": "2024-10-24"}'; 
 
 // get event for new task button
 const newTaskButtonEl = document.getElementById("newTaskButton");
@@ -151,8 +151,8 @@ function drawTable(obj) {
           t = document.createTextNode("Update");
           x.appendChild(t);
           cell6.appendChild(x);   
-          row.querySelector(".update").addEventListener("click", update)
-          row.querySelector(".complete").addEventListener("click", complete)
+          row.querySelector(".update").addEventListener("click", function () {update(i)})
+          row.querySelector(".complete").addEventListener("click", function () {complete(i)})
         }
       }
       break;
@@ -186,8 +186,8 @@ function drawTable(obj) {
           t = document.createTextNode("Delete");
           x.appendChild(t);
           cell6.appendChild(x);
-          row.querySelector(".delete").addEventListener("click", deleteTask)
-          row.querySelector(".incomplete").addEventListener("click", incomplete)
+          row.querySelector(".delete").addEventListener("click", function () {deleteTask(i)})
+          row.querySelector(".incomplete").addEventListener("click", function () {complete(i)})
         }   
       }
       break
@@ -221,8 +221,8 @@ function drawTable(obj) {
           t = document.createTextNode("Delete");
           x.appendChild(t);
           cell6.appendChild(x);
-          row.querySelector(".incomplete").addEventListener("click", incomplete)
-          row.querySelector(".delete").addEventListener("click", deleteTask)
+          row.querySelector(".incomplete").addEventListener("click",  function () {complete(i)})
+          row.querySelector(".delete").addEventListener("click",  function () {deleteTask(i)})
           }
           else {
             var x = document.createElement("BUTTON");
@@ -235,8 +235,8 @@ function drawTable(obj) {
             t = document.createTextNode("Update");
             x.appendChild(t);
             cell6.appendChild(x);
-            row.querySelector(".update").addEventListener("click", update)
-            row.querySelector(".complete").addEventListener("click", complete)
+            row.querySelector(".update").addEventListener("click", function () {update(i)})
+            row.querySelector(".complete").addEventListener("click", function () {complete(i)})
 
 // change color red if overdue code 
         if(obj.taskarr[i].completeDate<todayDate){
@@ -258,25 +258,84 @@ function drawTable(obj) {
   localStorage.clear();
   localStorage.setItem("tasksarr", JSON.stringify(tasksarr));
 }
-// Swap Incomplet to Complete
+// Swap Incomplete <> Complete
 function complete(whichButton) {
-  console.log("Complete function " + whichButton)
-}
+  var table = document.getElementById("task-table");
+    // change array cell 0 between Incomplete and complete and add
+    rowToChange = Number(whichButton)+2
+    console.log(whichButton +" "+rowToChange)
+    var cell = document.getElementById("task-table").rows[rowToChange].cells;
+      if (cell[0].innerHTML == "Complete") {
+        cell[0].innerHTML = "Incomplete";
+        cell[5].innerHTML ="";
+        var x = document.createElement("BUTTON");
+        x.classList.add("complete");
+        var t = document.createTextNode("Complete");
+        x.appendChild(t);
+        cell[5].appendChild(x);
+      x = document.createElement("BUTTON");
+      x.classList.add("update");
+      t = document.createTextNode("Update");
+      x.appendChild(t);
+      cell[5].appendChild(x);
+      cell[5].querySelector(".complete").addEventListener("click", function () {complete(whichButton)})
+      cell[5].querySelector(".update").addEventListener("click", function () {update(whichButton)})
+      }
+      else {
+        cell[0].innerHTML = "Complete";
+        cell[5].innerHTML = "";
+        var x = document.createElement("BUTTON");
+        x.classList.add("incomplete");
+        var t = document.createTextNode("Incomplete");
+        x.appendChild(t);
+        cell[5].appendChild(x);
+        x = document.createElement("BUTTON");
+        x.classList.add("delete"); 
+        t = document.createTextNode("Delete");
+        x.appendChild(t);
+        cell[5].appendChild(x);
+        cell[5].querySelector(".incomplete").addEventListener("click", function () {complete(whichButton)})
+        cell[5].querySelector(".delete").addEventListener("click",  function () {deleteTask(whichButton)})
+    }
+    // Update Array
 
-// Swap Complete to incomplete
-function incomplete(whichButton) {
-  console.log("Incomplete Button Pushed " + whichButton)
+    // update local store
+    // localStorage.clear();
+    // localStorage.setItem("tasksarr", JSON.stringify(tasksarr));
+
 }
 
 // Update Task
 function update(whichButton) {
-  console.log("update Button Pushed " + whichButton)
+  var table = document.getElementById("task-table");
+  console.log("update")
 }
 
 // Delete Task
 function deleteTask(whichButton) {
-  console.log("delete Button Pushed " + whichButton)
+// Add are you Sure?
+  x=areYouSure()
+// row.remove()
+  if (x=="1") {
+    rowToDelete = Number(whichButton)+2
+    var table = document.getElementById("task-table");
+    table.deleteRow(rowToDelete)
+// remove row whichButton form array 
+  var objecttest = JSON.parse(tasksarr)
+  // objecttest.splice(whichButton, 1);
+  const x = Number(whichButton)
+  delete objecttest.taskarr[1]
+  console.log(whichButton+" "+x)
+  console.log(objecttest.taskarr)
+// update local store and redraw so buttons have correct idenify
+  localStorage.clear();
+  localStorage.setItem("tasksarr", JSON.stringify(tasksarr));
+  const obj = JSON.parse(tasksarr);
+  clearTable()
+  drawTable(obj) 
 }
+}
+
 
 // function to decide what to list in task list
 // only display open
@@ -305,4 +364,14 @@ function listAll() {
   clearTable()
   const obj = JSON.parse(tasksarr);
   drawTable(obj) 
+}
+
+function areYouSure() {
+  var x;
+  if (confirm("Are you sure?") == true) {
+      x = 1;
+  } else {
+      x = 0;
+  }
+  return x; 
 }
