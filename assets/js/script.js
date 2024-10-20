@@ -28,9 +28,12 @@ allButtonEl.addEventListener("click", listAll);
 const searchButtonEl = document.getElementById("searchBar");
 searchButtonEl.addEventListener("keydown", function (e) {if (e.key === 'Enter') {searchBar()}});
 
-  const obj = JSON.parse(tasksarr);
+console.log(typeof(tasksarr))
+
+  const obj = JSON.parse(tasksarr)
   drawTable(obj)
-  inputValueReset()
+
+inputValueReset()
 
 // Clear Input value and put default values
 function inputValueReset(){
@@ -280,6 +283,8 @@ function complete(whichButton) {
       cell[5].appendChild(x);
       cell[5].querySelector(".complete").addEventListener("click", function () {complete(whichButton)})
       cell[5].querySelector(".update").addEventListener("click", function () {update(whichButton)})
+      objecttest = JSON.parse(tasksarr)
+      objecttest.taskarr[whichButton].Incomplete = "Incomplete"
       }
       else {
         cell[0].innerHTML = "Complete";
@@ -296,12 +301,13 @@ function complete(whichButton) {
         cell[5].appendChild(x);
         cell[5].querySelector(".incomplete").addEventListener("click", function () {complete(whichButton)})
         cell[5].querySelector(".delete").addEventListener("click",  function () {deleteTask(whichButton)})
+// Update Array
+        tasksarr = JSON.parse(tasksarr)
+        tasksarr.taskarr[whichButton].Incomplete = "Complete"
     }
-    // Update Array
-
-    // update local store
-    // localStorage.clear();
-    // localStorage.setItem("tasksarr", JSON.stringify(tasksarr));
+// update local store
+    localStorage.clear();
+    localStorage.setItem("tasksarr", JSON.stringify(tasksarr));
 
 }
 
