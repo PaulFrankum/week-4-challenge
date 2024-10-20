@@ -5,6 +5,7 @@ document.getElementById("All").style.backgroundColor="red";
 
 // This loads data from local storage.
 let tasksarr = JSON.parse(localStorage.getItem("tasksarr")) || [];
+
 // this was used as test data during coding please delete when project complete
 // let tasksarr ='{"Incomplete": "Incomplete", "Task": "do washing", "update": "waiting for washing powder", "startDate": "2024-10-13","completeDate": "2024-10-17"},'+'{"Incomplete": "Complete", "Task": "Wash Windows", "update": "waiting for Ladders", "startDate": "2024-10-15","completeDate": "2024-10-24"},'+'{"Incomplete": "Incomplete", "Task": "Wash Windows", "update": "waiting for Ladders", "startDate": "2024-10-15","completeDate": "2024-10-24"}'; 
 
@@ -28,11 +29,8 @@ allButtonEl.addEventListener("click", listAll);
 const searchButtonEl = document.getElementById("searchBar");
 searchButtonEl.addEventListener("keydown", function (e) {if (e.key === 'Enter') {searchBar()}});
 
-console.log(typeof(tasksarr))
-
-  const obj = JSON.parse(tasksarr)
-  drawTable(obj)
-
+console.log(tasksarr)
+drawTable(tasksarr)
 inputValueReset()
 
 // Clear Input value and put default values
@@ -81,7 +79,7 @@ function clearTable() {
 // function for when a new task button clicked
 function newTask() {
 // if list is on complete change to open otherwise task will not show
-if (document.getElementById("Closed").style.backgroundColor == "red"){
+if (document.getElementById("Closed").style.backgroundColor == "red") {
   document.getElementById("Open").style.backgroundColor="red";
   document.getElementById("Closed").style.backgroundColor="#2d3e50";
   document.getElementById("All").style.backgroundColor="#2d3e50";
@@ -94,15 +92,13 @@ var tasksAdd = {
   "startDate": document.getElementById("startDate").value,
   "completeDate": document.getElementById("completeDate").value
 }
-// add to obj
-var objAdd = JSON.stringify(tasksAdd)
-tasksarr = tasksarr.slice(0, -3) + "}, " + objAdd + "]}"
+// add to new task to task array
+tasksarr.taskarr.push(tasksAdd);
 
 // clear values and call redraw task table 
 clearTable()
 inputValueReset()
-const obj = JSON.parse(tasksarr);
-drawTable(obj) 
+drawTable(tasksarr) 
 }
   
 //Redraw Table
@@ -240,7 +236,6 @@ function drawTable(obj) {
             cell6.appendChild(x);
             row.querySelector(".update").addEventListener("click", function () {update(i)})
             row.querySelector(".complete").addEventListener("click", function () {complete(i)})
-
 // change color red if overdue code 
         if(obj.taskarr[i].completeDate<todayDate){
           cell1.style.backgroundColor = "#ff0000";
@@ -257,7 +252,6 @@ function drawTable(obj) {
   }
 
   // And finally this will now Save the tasks to the "localStorage".
-  tasksarr = JSON.stringify(obj)
   localStorage.clear();
   localStorage.setItem("tasksarr", JSON.stringify(tasksarr));
 }
@@ -276,15 +270,14 @@ function complete(whichButton) {
         var t = document.createTextNode("Complete");
         x.appendChild(t);
         cell[5].appendChild(x);
-      x = document.createElement("BUTTON");
-      x.classList.add("update");
-      t = document.createTextNode("Update");
-      x.appendChild(t);
-      cell[5].appendChild(x);
-      cell[5].querySelector(".complete").addEventListener("click", function () {complete(whichButton)})
-      cell[5].querySelector(".update").addEventListener("click", function () {update(whichButton)})
-      objecttest = JSON.parse(tasksarr)
-      objecttest.taskarr[whichButton].Incomplete = "Incomplete"
+        x = document.createElement("BUTTON");
+        x.classList.add("update");
+        t = document.createTextNode("Update");
+        x.appendChild(t);
+        cell[5].appendChild(x);
+        cell[5].querySelector(".complete").addEventListener("click", function () {complete(whichButton)})
+        cell[5].querySelector(".update").addEventListener("click", function () {update(whichButton)})
+        tasksarr.taskarr[whichButton].Incomplete = "Incomplete"
       }
       else {
         cell[0].innerHTML = "Complete";
@@ -302,7 +295,6 @@ function complete(whichButton) {
         cell[5].querySelector(".incomplete").addEventListener("click", function () {complete(whichButton)})
         cell[5].querySelector(".delete").addEventListener("click",  function () {deleteTask(whichButton)})
 // Update Array
-        tasksarr = JSON.parse(tasksarr)
         tasksarr.taskarr[whichButton].Incomplete = "Complete"
     }
 // update local store
@@ -324,24 +316,21 @@ function deleteTask(whichButton) {
 // row.remove()
   if (x=="1") {
     rowToDelete = Number(whichButton)+2
+    console.log(rowToDelete)
     var table = document.getElementById("task-table");
     table.deleteRow(rowToDelete)
 // remove row whichButton form array 
-  var objecttest = JSON.parse(tasksarr)
   // objecttest.splice(whichButton, 1);
   const x = Number(whichButton)
-  delete objecttest.taskarr[1]
-  console.log(whichButton+" "+x)
-  console.log(objecttest.taskarr)
+  delete tasksarr.taskarr[rowToDelete]
 // update local store and redraw so buttons have correct idenify
   localStorage.clear();
   localStorage.setItem("tasksarr", JSON.stringify(tasksarr));
-  const obj = JSON.parse(tasksarr);
   clearTable()
-  drawTable(obj) 
-}
-}
+  drawTable(tasksarr) 
 
+}
+}
 
 // function to decide what to list in task list
 // only display open
@@ -350,8 +339,7 @@ function listOpen(){
   document.getElementById("Closed").style.backgroundColor="#2d3e50";
   document.getElementById("All").style.backgroundColor="#2d3e50";
   clearTable()
-  const obj = JSON.parse(tasksarr);
-  drawTable(obj)
+  drawTable(tasksarr)
 }
 // only display closed
 function listClosed() {
@@ -359,8 +347,7 @@ function listClosed() {
   document.getElementById("Closed").style.backgroundColor="red";
   document.getElementById("All").style.backgroundColor="#2d3e50";
   clearTable()
-  const obj = JSON.parse(tasksarr);
-  drawTable(obj) 
+  drawTable(tasksarr) 
 }
 // only display all
 function listAll() {
@@ -368,8 +355,7 @@ function listAll() {
   document.getElementById("Closed").style.backgroundColor="#2d3e50";
   document.getElementById("All").style.backgroundColor="red";  
   clearTable()
-  const obj = JSON.parse(tasksarr);
-  drawTable(obj) 
+  drawTable(tasksarr) 
 }
 
 function areYouSure() {
