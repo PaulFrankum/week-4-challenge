@@ -5,7 +5,10 @@ document.getElementById("All").style.backgroundColor="red";
 
 // This loads data from local storage.
 let tasksarr = JSON.parse(localStorage.getItem("tasksarr")) || [];
-
+if (tasksarr==""){
+// first use create sample database
+let tasksarr ='{"Incomplete": "Incomplete", "Task": "Sample", "update": "update eg wait for call back wait for part for washing powder", "startDate": "2024-10-13","completeDate": "2024-10-17"}'; 
+}
 // get event for new task button
 const newTaskButtonEl = document.getElementById("newTaskButton");
 newTaskButtonEl.addEventListener("click", newTask);
