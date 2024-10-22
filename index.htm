@@ -33,14 +33,17 @@
 
         <!-- Main Content -->
         <main class="main-content">
-            <h2>Task List</h2>
+            <h2 id="h2">Task List</h2>
             <div class="widget">
-                <input type="text" id="complete" Value="Incomplete"/>
+                <input type="text" id="complete" class="completeMain" Value="Incomplete"/>
                 <input type="text" id="newTask"/>
-                <input type="text" id="update"/>
+                <input type="text" id="update" class="updateMain"/>
                 <input type="date" id="startDate" value=""/>
                 <input type="date" id="completeDate" value=""/>
                 <button id="newTaskButton">New Task</button>
+                <button id="saveButton" class="saveButton" style="display:None;">Save</button>
+                <button id="cancelButton" class="cancelButton" style="display:None;">Cancel</button>
+                
             </div>
 
             <table class="task-table" id="task-table">
@@ -55,8 +58,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                    </tr>
                 </tbody>
             </table>
         </main>

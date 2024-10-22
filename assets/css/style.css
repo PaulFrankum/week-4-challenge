@@ -117,6 +117,18 @@ body {
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
 }
+.updateMain{
+    display:none;
+}
+.completeMain{
+    display:none;
+}
+.saveButton {
+    display:none;
+}
+.cancelButton{
+    display:none;
+} 
 
 button {
     padding: 10px 20px;

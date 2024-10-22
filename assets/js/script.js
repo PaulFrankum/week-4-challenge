@@ -29,7 +29,6 @@ allButtonEl.addEventListener("click", listAll);
 const searchButtonEl = document.getElementById("searchBar");
 searchButtonEl.addEventListener("keydown", function (e) {if (e.key === 'Enter') {searchBar()}});
 
-console.log(tasksarr)
 drawTable(tasksarr)
 inputValueReset()
 
@@ -48,17 +47,19 @@ function inputValueReset(){
 
 // retieve date and format and add number of days requested
 function dateRetieve(addDays){
-var now = new Date();
-const month = now.getMonth()+1;
-const day = now.getDate()+Number(addDays);
-const year = now.getFullYear();
-return year+"-"+month+"-"+day;
+  var now = new Date();
+  const month = now.getMonth()+1;
+  const day = now.getDate()+Number(addDays);
+  const year = now.getFullYear();
+  return year+"-"+month+"-"+day;
 }
 
 // Search function
 function searchBar(){
   const search = document.getElementById("searchBar").value;
-// Ready for code to search
+// 
+// 
+// Code to write to complete search
 // 
 // 
 // 
@@ -68,37 +69,39 @@ function searchBar(){
 function clearTable() {
   var table = document.getElementById("task-table");
   numberOfRows = document.getElementById("task-table").rows.length;
-  if(numberOfRows>2){
+  if(numberOfRows>1){
     for(i=numberOfRows; i>1; i-- ){
       var row = table.deleteRow(1);
     }
-  // if(document.getElementById("task-table").rows.length=2) {var row = table.deleteRow(1);}  
   }
 }
 
 // function for when a new task button clicked
 function newTask() {
 // if list is on complete change to open otherwise task will not show
-if (document.getElementById("Closed").style.backgroundColor == "red") {
-  document.getElementById("Open").style.backgroundColor="red";
-  document.getElementById("Closed").style.backgroundColor="#2d3e50";
-  document.getElementById("All").style.backgroundColor="#2d3e50";
-}  
+  if (document.getElementById("Closed").style.backgroundColor == "red") {
+    document.getElementById("Open").style.backgroundColor="red";
+    document.getElementById("Closed").style.backgroundColor="#2d3e50";
+    document.getElementById("All").style.backgroundColor="#2d3e50";
+  }
+  if (document.getElementById("newTask").value==""){
+    alert("No task enter!")
+    return
+  }
 // get input values into tasksAdd
-var tasksAdd = {
+  var tasksAdd = {
   "Incomplete": document.getElementById("complete").value,
   "Task": document.getElementById("newTask").value,
   "update": document.getElementById("update").value,
   "startDate": document.getElementById("startDate").value,
   "completeDate": document.getElementById("completeDate").value
-}
+  }
 // add to new task to task array
-tasksarr.taskarr.push(tasksAdd);
-
+  tasksarr.taskarr.push(tasksAdd);
 // clear values and call redraw task table 
-clearTable()
-inputValueReset()
-drawTable(tasksarr) 
+  clearTable()
+  inputValueReset()
+  drawTable(tasksarr) 
 }
   
 //Redraw Table
@@ -109,162 +112,111 @@ function drawTable(obj) {
   if (document.getElementById("Closed").style.backgroundColor == "red"){list="Closed"}
 // decides what list to print ie all complete or incomplete
   todayDate=dateRetieve(0)
-  switch(list){
-    case list="Open":
-      for(let i=0; obj.taskarr.length > i; i++){
-        if(obj.taskarr[i].Incomplete=="Incomplete") {
+  for(let i=0; obj.taskarr.length > i; i++){
 // Insert Row at End
-          var table = document.getElementById("task-table");
-          var row = table.insertRow(-1);
-          var cell1 = row.insertCell(0);
-          var cell2 = row.insertCell(1);
-          var cell3 = row.insertCell(2);
-          var cell4 = row.insertCell(3);
-          var cell5 = row.insertCell(4);
-          var cell6 = row.insertCell(5);
-// change color red if overdue code 
-          if(obj.taskarr[i].completeDate<todayDate){
-            cell1.style.backgroundColor = "#ff0000";
-            cell2.style.backgroundColor = "#ff0000";
-            cell3.style.backgroundColor = "#ff0000";
-            cell4.style.backgroundColor = "#ff0000";
-            cell5.style.backgroundColor = "#ff0000";
-            cell6.style.backgroundColor = "#ff0000";          
-          }
-// end of red code
+    var table = document.getElementById("task-table");
+    var row = table.insertRow(-1);
+    var cell1 = row.insertCell(0);
+    var cell2 = row.insertCell(1);
+    var cell3 = row.insertCell(2);
+    var cell4 = row.insertCell(3);
+    var cell5 = row.insertCell(4);
+    var cell6 = row.insertCell(5);
 //  insert data into row 
-          //  insert data into row 
-          cell1.innerHTML = obj.taskarr[i].Incomplete;
-          cell2.innerHTML = obj.taskarr[i].Task;
-          cell3.innerHTML = obj.taskarr[i].update;
-          cell4.innerHTML = obj.taskarr[i].startDate;
-          cell5.innerHTML = obj.taskarr[i].completeDate;
-// Depending if task complete or not add correct buttons
-          var x = document.createElement("BUTTON");
-          x.classList.add("complete");
-          var t = document.createTextNode("Complete");
-          x.appendChild(t);
-          cell6.appendChild(x);
-          x = document.createElement("BUTTON");
-          x.classList.add("update");
-          t = document.createTextNode("Update");
-          x.appendChild(t);
-          cell6.appendChild(x);   
-          row.querySelector(".update").addEventListener("click", function () {update(i)})
-          row.querySelector(".complete").addEventListener("click", function () {complete(i)})
-        }
-      }
-      break;
-
-    case list="Closed":
-      for(let i=0; obj.taskarr.length > i; i++){
-        if(obj.taskarr[i].Incomplete=="Complete") {
-  // Insert Row at End
-          var table = document.getElementById("task-table");
-          var row = table.insertRow(-1);
-          var cell1 = row.insertCell(0);
-          var cell2 = row.insertCell(1);
-          var cell3 = row.insertCell(2);
-          var cell4 = row.insertCell(3);
-          var cell5 = row.insertCell(4);
-          var cell6 = row.insertCell(5);
-  //  insert data into row 
-          cell1.innerHTML = obj.taskarr[i].Incomplete;
-          cell2.innerHTML = obj.taskarr[i].Task;
-          cell3.innerHTML = obj.taskarr[i].update;
-          cell4.innerHTML = obj.taskarr[i].startDate;
-          cell5.innerHTML = obj.taskarr[i].completeDate;
+    cell1.innerHTML = obj.taskarr[i].Incomplete;
+    cell2.innerHTML = obj.taskarr[i].Task;
+    cell3.innerHTML = obj.taskarr[i].update;
+    cell4.innerHTML = obj.taskarr[i].startDate;
+    cell5.innerHTML = obj.taskarr[i].completeDate;
   // Depending if task complete or not add correct buttons
-          var x = document.createElement("BUTTON");
-          x.classList.add("incomplete");
-          var t = document.createTextNode("Incomplete");
-          x.appendChild(t);
-          cell6.appendChild(x);
-          x = document.createElement("BUTTON");
-          x.classList.add("delete");
-          t = document.createTextNode("Delete");
-          x.appendChild(t);
-          cell6.appendChild(x);
-          row.querySelector(".delete").addEventListener("click", function () {deleteTask(i)})
-          row.querySelector(".incomplete").addEventListener("click", function () {complete(i)})
-        }   
+    if (obj.taskarr[i].Incomplete == "Complete") {
+      var x = document.createElement("BUTTON");
+      x.classList.add("incomplete");
+      var t = document.createTextNode("Incomplete");
+      x.appendChild(t);
+      cell6.appendChild(x);
+      x = document.createElement("BUTTON");
+      x.classList.add("delete"); 
+      t = document.createTextNode("Delete");
+      x.appendChild(t);
+      cell6.appendChild(x);
+// hide row that should not be should when closed or open option choosen 
+      // style="display:None;"
+      // select row quicker  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+      if (list=="Open") {
+        cell1.style.display = "None";
+        cell2.style.display = "None";
+        cell3.style.display = "None";
+        cell4.style.display = "None";
+        cell5.style.display = "None";
+        cell6.style.display = "None";
       }
-      break
-
-    case list="All":
-      for(let i=0; obj.taskarr.length > i; i++){
- // Insert Row at End
-        var table = document.getElementById("task-table");
-        var row = table.insertRow(-1);
-        var cell1 = row.insertCell(0);
-        var cell2 = row.insertCell(1);
-        var cell3 = row.insertCell(2);
-        var cell4 = row.insertCell(3);
-        var cell5 = row.insertCell(4);
-        var cell6 = row.insertCell(5);
-  //  insert data into row 
-        cell1.innerHTML = obj.taskarr[i].Incomplete;
-        cell2.innerHTML = obj.taskarr[i].Task;
-        cell3.innerHTML = obj.taskarr[i].update;
-        cell4.innerHTML = obj.taskarr[i].startDate;
-        cell5.innerHTML = obj.taskarr[i].completeDate;
-// Depending if task complete or not add correct buttons
-        if (obj.taskarr[i].Incomplete == "Complete") {
-          var x = document.createElement("BUTTON");
-          x.classList.add("incomplete");
-          var t = document.createTextNode("Incomplete");
-          x.appendChild(t);
-          cell6.appendChild(x);
-          x = document.createElement("BUTTON");
-          x.classList.add("delete"); 
-          t = document.createTextNode("Delete");
-          x.appendChild(t);
-          cell6.appendChild(x);
-          row.querySelector(".incomplete").addEventListener("click",  function () {complete(i)})
-          row.querySelector(".delete").addEventListener("click",  function () {deleteTask(i)})
-          }
-          else {
-            var x = document.createElement("BUTTON");
-            x.classList.add("complete");
-            var t = document.createTextNode("Complete");
-            x.appendChild(t);
-            cell6.appendChild(x);
-            x = document.createElement("BUTTON");
-            x.classList.add("update");
-            t = document.createTextNode("Update");
-            x.appendChild(t);
-            cell6.appendChild(x);
-            row.querySelector(".update").addEventListener("click", function () {update(i)})
-            row.querySelector(".complete").addEventListener("click", function () {complete(i)})
+      row.querySelector(".incomplete").addEventListener("click",  function () {complete(i)})
+      row.querySelector(".delete").addEventListener("click",  function () {deleteTask(i)})
+      }
+    else {
+      var x = document.createElement("BUTTON");
+      x.classList.add("complete");
+      var t = document.createTextNode("Complete");
+      x.appendChild(t);
+      cell6.appendChild(x);
+      x = document.createElement("BUTTON");
+      x.classList.add("update");
+      t = document.createTextNode("Update");
+      x.appendChild(t);
+      cell6.appendChild(x);
+// hide row that should not be should when closed or open option choosen 
+      // select row quicker  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+      if (list=="Closed") {
+        cell1.style.display = "None";
+        cell2.style.display = "None";
+        cell3.style.display = "None";
+        cell4.style.display = "None";
+        cell5.style.display = "None";
+        cell6.style.display = "None";
+      }
+      row.querySelector(".update").addEventListener("click", function () {update(i)})
+      row.querySelector(".complete").addEventListener("click", function () {complete(i)})
 // change color red if overdue code 
-        if(obj.taskarr[i].completeDate<todayDate){
-          cell1.style.backgroundColor = "#ff0000";
-          cell2.style.backgroundColor = "#ff0000";
-          cell3.style.backgroundColor = "#ff0000";
-          cell4.style.backgroundColor = "#ff0000";
-          cell5.style.backgroundColor = "#ff0000";
-          cell6.style.backgroundColor = "#ff0000";
-          console.log("The Cheques in the post")   
+      if (obj.taskarr[i].completeDate<todayDate) {
+      // select row quicker  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        cell1.style.backgroundColor = "#ff0000";
+        cell2.style.backgroundColor = "#ff0000";
+        cell3.style.backgroundColor = "#ff0000";
+        cell4.style.backgroundColor = "#ff0000";
+        cell5.style.backgroundColor = "#ff0000";
+        cell6.style.backgroundColor = "#ff0000";
+// console.log("The Cheques in the post")   
 // end of red code
-        }
       }
     }
   }
-
   // And finally this will now Save the tasks to the "localStorage".
   localStorage.clear();
   localStorage.setItem("tasksarr", JSON.stringify(tasksarr));
-}
+} 
+
+
 // Swap Incomplete <> Complete
 function complete(whichButton) {
   var table = document.getElementById("task-table");
+  todayDate=dateRetieve(0)
     // change array cell 0 between Incomplete and complete and add
-    rowToChange = Number(whichButton)+2
-    console.log(whichButton +" "+rowToChange)
+    rowToChange = Number(whichButton)+1
     var cell = document.getElementById("task-table").rows[rowToChange].cells;
       if (cell[0].innerHTML == "Complete") {
         cell[0].innerHTML = "Incomplete";
         cell[5].innerHTML ="";
+// check if background should be red as change to task Incomplete      
+        if (tasksarr.taskarr[whichButton].completeDate<todayDate) {
+          // select row quicker  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+            cell[0].style.backgroundColor = "#ff0000";
+            cell[1].style.backgroundColor = "#ff0000";
+            cell[2].style.backgroundColor = "#ff0000";
+            cell[3].style.backgroundColor = "#ff0000";
+            cell[4].style.backgroundColor = "#ff0000";
+            cell[5].style.backgroundColor = "#ff0000";
+          }
         var x = document.createElement("BUTTON");
         x.classList.add("complete");
         var t = document.createTextNode("Complete");
@@ -279,9 +231,20 @@ function complete(whichButton) {
         cell[5].querySelector(".update").addEventListener("click", function () {update(whichButton)})
         tasksarr.taskarr[whichButton].Incomplete = "Incomplete"
       }
+
       else {
         cell[0].innerHTML = "Complete";
         cell[5].innerHTML = "";
+// check if background red and change to white as task complete        
+        if (cell[0].style.backgroundColor=="rgb(255, 0, 0)") {
+          // select row quicker  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+            cell[0].style.backgroundColor = "#FFFFFF";
+            cell[1].style.backgroundColor = "#FFFFFF";
+            cell[2].style.backgroundColor = "#FFFFFF";
+            cell[3].style.backgroundColor = "#FFFFFF";
+            cell[4].style.backgroundColor = "#FFFFFF";
+            cell[5].style.backgroundColor = "#FFFFFF";
+          }
         var x = document.createElement("BUTTON");
         x.classList.add("incomplete");
         var t = document.createTextNode("Incomplete");
@@ -297,43 +260,112 @@ function complete(whichButton) {
 // Update Array
         tasksarr.taskarr[whichButton].Incomplete = "Complete"
     }
+    if (list=="Closed" || list=="Open"){
+          // select row quicker  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+      cell[0].style.display = "None";
+      cell[1].style.display = "None";
+      cell[2].style.display = "None";
+      cell[3].style.display = "None";
+      cell[4].style.display = "None";
+      cell[5].style.display = "None";
+    }
 // update local store
     localStorage.clear();
     localStorage.setItem("tasksarr", JSON.stringify(tasksarr));
-
 }
 
 // Update Task
 function update(whichButton) {
+  const x= Number(whichButton)
+  console.log(x)
   var table = document.getElementById("task-table");
-  console.log("update")
+// Change screen to Update Task
+  document.getElementById("h2").innerHTML = "Update Task";
+  document.getElementById("update").style.display = "inline-flex";
+  document.getElementById("newTaskButton").style.display = "None";
+  document.getElementById("saveButton").style.display = "inline-flex";
+  document.getElementById("cancelButton").style.display = "inline-flex";
+  document.getElementById("Open").style.display = "None";
+  document.getElementById("Closed").style.display = "None";
+  document.getElementById("All").style.display = "None";
+  // document.querySelectorAll(".complete");[0].style.visibility = 'hidden';
+  // document.querySelectorAll(".update")[0].style.visibility = 'hidden';
+  // document.querySelectorAll(".delete")[0].style.visibility = 'hidden';
+  // document.querySelectorAll(".incomplete")[0].style.visibility = 'hidden';
+// add value to input update task
+  document.getElementById('newTask').value= tasksarr.taskarr[x].Task;
+  document.getElementById('update').value= tasksarr.taskarr[x].update;
+  document.getElementById('startDate').value= tasksarr.taskarr[x].startDate;
+  document.getElementById('completeDate').value = tasksarr.taskarr[x].completeDate;
+// get event for save and cancel button
+  const  saveButtonEl = document.getElementById("saveButton");
+  saveButtonEl.addEventListener("click",  function () {saveButton(x)})
+  const cancelButtonEl = document.getElementById("cancelButton");
+  cancelButtonEl.addEventListener("click",  function () {cancelButton()})
+}
+
+// Cancel button when in Update Task
+function cancelButton() {
+  document.getElementById("h2").innerHTML = "New Task";
+  document.getElementById("update").style.display = "None";
+  document.getElementById("newTaskButton").style.display = "inline-flex";
+  document.getElementById("saveButton").style.display = "None";
+  document.getElementById("cancelButton").style.display = "None";
+  document.getElementById("Open").style.display = "inline-flex";
+  document.getElementById("Closed").style.display = "inline-flex";
+  document.getElementById("All").style.display = "inline-flex";
+  inputValueReset()
+}
+
+function saveButton(x) {
+  console.log("save " + x)
+  x=x+1
+  console.log("save " + x)
+//write change to table
+  var cell = document.getElementById("task-table").rows[x].cells;
+  cell[1].innerHTML = document.getElementById("newTask").value,
+  cell[2].innerHTML = document.getElementById("update").value,
+  cell[3].innerHTML = document.getElementById("startDate").value,
+  cell[4].innerHTML = document.getElementById("completeDate").value
+// write changes to array
+  x=x-1
+  console.log("save " + x)
+  tasksarr.taskarr[x].Task = document.getElementById("newTask").value,
+  tasksarr.taskarr[x].update = document.getElementById("update").value,
+  tasksarr.taskarr[x].startDate = document.getElementById("startDate").value,
+  tasksarr.taskarr[x].completeDate = document.getElementById("completeDate").value 
+// change value to default and hidden and reshow to be in New task screen
+  const  saveButtonEl = document.getElementById("saveButton");
+  saveButtonEl.removeEventListener("click",  function () {saveButton(x)})
+  const cancelButtonEl = document.getElementById("cancelButton");
+  cancelButtonEl.removeEventListener("click",  function () {cancelButton()})
+  localStorage.clear();
+  localStorage.setItem("tasksarr", JSON.stringify(tasksarr));
+  cancelButton()
+  clearTable() 
+  drawTable(tasksarr)
 }
 
 // Delete Task
 function deleteTask(whichButton) {
 // Add are you Sure?
   x=areYouSure()
-// row.remove()
+// row.remove if sure?
   if (x=="1") {
-    rowToDelete = Number(whichButton)+2
-    console.log(rowToDelete)
+    rowToDelete = Number(whichButton)
     var table = document.getElementById("task-table");
-    table.deleteRow(rowToDelete)
-// remove row whichButton form array 
-  // objecttest.splice(whichButton, 1);
-  const x = Number(whichButton)
-  delete tasksarr.taskarr[rowToDelete]
+// table.deleteRow(rowToDelete)
+    tasksarr.taskarr.splice(rowToDelete, 1);
 // update local store and redraw so buttons have correct idenify
-  localStorage.clear();
-  localStorage.setItem("tasksarr", JSON.stringify(tasksarr));
-  clearTable()
-  drawTable(tasksarr) 
-
+    localStorage.clear();
+    localStorage.setItem("tasksarr", JSON.stringify(tasksarr));
+    clearTable()
+    drawTable(tasksarr) 
+  }
 }
-}
 
-// function to decide what to list in task list
-// only display open
+// functions to decide what to list in task list
+// only display open tasks
 function listOpen(){
   document.getElementById("Open").style.backgroundColor="red";
   document.getElementById("Closed").style.backgroundColor="#2d3e50";
@@ -341,7 +373,7 @@ function listOpen(){
   clearTable()
   drawTable(tasksarr)
 }
-// only display closed
+// only display closed tasks
 function listClosed() {
   document.getElementById("Open").style.backgroundColor="#2d3e50";
   document.getElementById("Closed").style.backgroundColor="red";
@@ -349,7 +381,7 @@ function listClosed() {
   clearTable()
   drawTable(tasksarr) 
 }
-// only display all
+// display all tasks
 function listAll() {
   document.getElementById("Open").style.backgroundColor="#2d3e50";
   document.getElementById("Closed").style.backgroundColor="#2d3e50";
@@ -358,6 +390,7 @@ function listAll() {
   drawTable(tasksarr) 
 }
 
+// are you sure function
 function areYouSure() {
   var x;
   if (confirm("Are you sure?") == true) {
