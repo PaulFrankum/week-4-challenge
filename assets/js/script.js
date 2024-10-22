@@ -1,13 +1,10 @@
-// default all with red backgroud
+1// default all with red backgroud
 document.getElementById("Open").style.backgroundColor="#2d3e50";
 document.getElementById("Closed").style.backgroundColor="#2d3e50";
 document.getElementById("All").style.backgroundColor="red"; 
 
 // This loads data from local storage.
 let tasksarr = JSON.parse(localStorage.getItem("tasksarr")) || [];
-
-// this was used as test data during coding please delete when project complete
-// let tasksarr ='{"Incomplete": "Incomplete", "Task": "do washing", "update": "waiting for washing powder", "startDate": "2024-10-13","completeDate": "2024-10-17"},'+'{"Incomplete": "Complete", "Task": "Wash Windows", "update": "waiting for Ladders", "startDate": "2024-10-15","completeDate": "2024-10-24"},'+'{"Incomplete": "Incomplete", "Task": "Wash Windows", "update": "waiting for Ladders", "startDate": "2024-10-15","completeDate": "2024-10-24"}'; 
 
 // get event for new task button
 const newTaskButtonEl = document.getElementById("newTaskButton");
@@ -38,11 +35,12 @@ function inputValueReset(){
   date = dateRetieve(Number(0))
   date2 = dateRetieve(Number(7))
 // Clear input Values to deafult 
-  document.getElementById('complete').value= "Incomplete";
-  document.getElementById('newTask').value= "";
-  document.getElementById('update').value= "";
-  document.getElementById('startDate').value= date;
-  document.getElementById('completeDate').value= date2;
+  document.getElementById("complete").value= "Incomplete";
+  document.getElementById("newTask").value= "";
+  document.getElementById("update").value= "";
+  document.getElementById("startDate").value= date;
+  document.getElementById("completeDate").value= date2;
+  document.getElementById("searchBar").placeholder="Search tasks..."
 }
 
 // retieve date and format and add number of days requested
@@ -57,6 +55,7 @@ function dateRetieve(addDays){
 // Search function
 function searchBar(){
   const search = document.getElementById("searchBar").value;
+  document.getElementById("searchBar").Value = "";
 // Check if blank
   if (search==""){
     alert("No search enter!")
@@ -65,7 +64,6 @@ function searchBar(){
 // check if search is found   
   let stringArr = JSON.stringify(tasksarr);
   let result = stringArr.indexOf(search);
-  console.log(result)
   if (result==-1){
     alert("search not found!")
    return
@@ -74,11 +72,82 @@ function searchBar(){
   document.getElementById("Open").style.backgroundColor="#2d3e50";
   document.getElementById("Closed").style.backgroundColor="#2d3e50"; 
   document.getElementById("All").style.backgroundColor="red";
+  clearTable()
+  
 // Code to write to complete search
-// 
-// 
-// 
-}
+// Start redrawing screen
+  var list="All"
+  todayDate=dateRetieve(0)
+  for(let i=0; tasksarr.taskarr.length > i; i++){
+// Insert Row at End
+    var table = document.getElementById("task-table");
+    var row = table.insertRow(-1);
+    var cell1 = row.insertCell(0);
+    var cell2 = row.insertCell(1);
+    var cell3 = row.insertCell(2);
+    var cell4 = row.insertCell(3);
+    var cell5 = row.insertCell(4);
+    var cell6 = row.insertCell(5);
+//  insert data into row 
+    cell1.innerHTML = tasksarr.taskarr[i].Incomplete;
+    cell2.innerHTML = tasksarr.taskarr[i].Task;
+    cell3.innerHTML = tasksarr.taskarr[i].update;
+    cell4.innerHTML = tasksarr.taskarr[i].startDate;
+    cell5.innerHTML = tasksarr.taskarr[i].completeDate;
+// Depending if task complete or not add correct buttons
+    if (tasksarr.taskarr[i].Incomplete == "Complete") {
+      var x = document.createElement("BUTTON");
+      x.classList.add("incomplete");
+      var t = document.createTextNode("Incomplete");
+      x.appendChild(t);
+      cell6.appendChild(x);
+      x = document.createElement("BUTTON");
+      x.classList.add("delete"); 
+      t = document.createTextNode("Delete");
+      x.appendChild(t);
+      cell6.appendChild(x);
+      row.querySelector(".incomplete").addEventListener("click",  function () {complete(i)})
+      row.querySelector(".delete").addEventListener("click",  function () {deleteTask(i)})
+    }
+    else {
+      var x = document.createElement("BUTTON");
+      x.classList.add("complete");
+      var t = document.createTextNode("Complete");
+      x.appendChild(t);
+      cell6.appendChild(x);
+      x = document.createElement("BUTTON");
+      x.classList.add("update");
+      x.setAttribute("id", "update");
+      t = document.createTextNode("Update");
+      x.appendChild(t);
+      cell6.appendChild(x);
+      if (tasksarr.taskarr[i].completeDate<todayDate) {
+        // select row quicker  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+          cell1.style.backgroundColor = "#ff0000";
+          cell2.style.backgroundColor = "#ff0000";
+          cell3.style.backgroundColor = "#ff0000";
+          cell4.style.backgroundColor = "#ff0000";
+          cell5.style.backgroundColor = "#ff0000";
+          cell6.style.backgroundColor = "#ff0000";
+        }
+      row.querySelector(".update").addEventListener("click", function () {update(i)})
+      row.querySelector(".complete").addEventListener("click", function () {complete(i)})
+    }
+// hide rows that do not match search
+    var obj = tasksarr.taskarr[i]
+    let stringArr = JSON.stringify(obj);
+    let result = stringArr.indexOf(search);
+    if (result == -1){
+      cell1.style.display = "None";
+      cell2.style.display = "None";
+      cell3.style.display = "None";
+      cell4.style.display = "None";
+      cell5.style.display = "None";
+      cell6.style.display = "None";  
+    }
+  }
+  document.getElementById("searchBar").value="Search tasks..."
+}    
 
 // clear table
 function clearTable() {
@@ -291,7 +360,6 @@ function complete(whichButton) {
 // Update Task
 function update(whichButton) {
   const x= Number(whichButton)
-  console.log(x)
   var table = document.getElementById("task-table");
 // Change screen to Update Task
   document.getElementById("h2").innerHTML = "Update Task";
@@ -339,9 +407,7 @@ function cancelButton() {
 }
 
 function saveButton(x) {
-  console.log("save " + x)
   x=x+1
-  console.log("save " + x)
 // write change to table
   var cell = document.getElementById("task-table").rows[x].cells;
   cell[1].innerHTML = document.getElementById("newTask").value,
@@ -350,7 +416,6 @@ function saveButton(x) {
   cell[4].innerHTML = document.getElementById("completeDate").value
 // write changes to array
   x=x-1
-  console.log("save " + x)
   tasksarr.taskarr[x].Task = document.getElementById("newTask").value,
   tasksarr.taskarr[x].update = document.getElementById("update").value,
   tasksarr.taskarr[x].startDate = document.getElementById("startDate").value,
