@@ -4,11 +4,16 @@ document.getElementById("Closed").style.backgroundColor="#2d3e50";
 document.getElementById("All").style.backgroundColor="red"; 
 
 // This loads data from local storage.
-let tasksarr = JSON.parse(localStorage.getItem("tasksarr")) || [];
-if (tasksarr==""){
-// first use create sample database
-let tasksarr ='{"Incomplete": "Incomplete", "Task": "Sample", "update": "update eg wait for call back wait for part for washing powder", "startDate": "2024-10-13","completeDate": "2024-10-17"}'; 
+var tasksarr = JSON.parse(localStorage.getItem("tasksarr")) || [];
+if (tasksarr.length==0){
+  console.log("create task")
+  var tasksarr ='{"taskarr":['+
+    '{"Incomplete": "Incomplete", "Task": "Sample One", "update": "e.g. Waiting for part delivery", "startDate": "2024-10-13","completeDate": "2024-10-17"},'+
+    '{"Incomplete": "Complete", "Task": "Sample Two", "update": "e.g.waitingfor call back", "startDate": "2024-10-15","completeDate": "2024-10-24"},'+
+    '{"Incomplete": "Incomplete", "Task": "Sample Three", "update": "", "startDate": "2024-10-15","completeDate": "2024-10-24"}]}'; 
+    tasksarr =JSON.parse(tasksarr)
 }
+
 // get event for new task button
 const newTaskButtonEl = document.getElementById("newTaskButton");
 newTaskButtonEl.addEventListener("click", newTask);
