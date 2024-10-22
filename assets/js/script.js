@@ -57,8 +57,23 @@ function dateRetieve(addDays){
 // Search function
 function searchBar(){
   const search = document.getElementById("searchBar").value;
-// 
-// 
+// Check if blank
+  if (search==""){
+    alert("No search enter!")
+    return
+  }
+// check if search is found   
+  let stringArr = JSON.stringify(tasksarr);
+  let result = stringArr.indexOf(search);
+  console.log(result)
+  if (result==-1){
+    alert("search not found!")
+   return
+  }
+// Change button to all so all will display in result
+  document.getElementById("Open").style.backgroundColor="#2d3e50";
+  document.getElementById("Closed").style.backgroundColor="#2d3e50"; 
+  document.getElementById("All").style.backgroundColor="red";
 // Code to write to complete search
 // 
 // 
@@ -132,11 +147,13 @@ function drawTable(obj) {
     if (obj.taskarr[i].Incomplete == "Complete") {
       var x = document.createElement("BUTTON");
       x.classList.add("incomplete");
+      x.setAttribute("id", "incomplete");
       var t = document.createTextNode("Incomplete");
       x.appendChild(t);
       cell6.appendChild(x);
       x = document.createElement("BUTTON");
       x.classList.add("delete"); 
+      x.setAttribute("id", "delete");
       t = document.createTextNode("Delete");
       x.appendChild(t);
       cell6.appendChild(x);
@@ -157,11 +174,13 @@ function drawTable(obj) {
     else {
       var x = document.createElement("BUTTON");
       x.classList.add("complete");
+      x.setAttribute("id", "complete");
       var t = document.createTextNode("Complete");
       x.appendChild(t);
       cell6.appendChild(x);
       x = document.createElement("BUTTON");
       x.classList.add("update");
+      x.setAttribute("id", "update");
       t = document.createTextNode("Update");
       x.appendChild(t);
       cell6.appendChild(x);
@@ -204,33 +223,32 @@ function complete(whichButton) {
     // change array cell 0 between Incomplete and complete and add
     rowToChange = Number(whichButton)+1
     var cell = document.getElementById("task-table").rows[rowToChange].cells;
-      if (cell[0].innerHTML == "Complete") {
-        cell[0].innerHTML = "Incomplete";
-        cell[5].innerHTML ="";
+    if (cell[0].innerHTML == "Complete") {
+      cell[0].innerHTML = "Incomplete";
+      cell[5].innerHTML ="";
 // check if background should be red as change to task Incomplete      
-        if (tasksarr.taskarr[whichButton].completeDate<todayDate) {
-          // select row quicker  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-            cell[0].style.backgroundColor = "#ff0000";
-            cell[1].style.backgroundColor = "#ff0000";
-            cell[2].style.backgroundColor = "#ff0000";
-            cell[3].style.backgroundColor = "#ff0000";
-            cell[4].style.backgroundColor = "#ff0000";
-            cell[5].style.backgroundColor = "#ff0000";
-          }
-        var x = document.createElement("BUTTON");
-        x.classList.add("complete");
-        var t = document.createTextNode("Complete");
-        x.appendChild(t);
-        cell[5].appendChild(x);
-        x = document.createElement("BUTTON");
-        x.classList.add("update");
-        t = document.createTextNode("Update");
-        x.appendChild(t);
-        cell[5].appendChild(x);
-        cell[5].querySelector(".complete").addEventListener("click", function () {complete(whichButton)})
-        cell[5].querySelector(".update").addEventListener("click", function () {update(whichButton)})
-        tasksarr.taskarr[whichButton].Incomplete = "Incomplete"
+      if (tasksarr.taskarr[whichButton].completeDate<todayDate) {
+        // select row quicker  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        for (i=0; i==5; i++){  
+          cell[i].style.backgroundColor = "#ff0000";
+        }
       }
+      var x = document.createElement("BUTTON");
+      x.classList.add("complete");
+      x.setAttribute("id", "complete");
+      var t = document.createTextNode("Complete");
+      x.appendChild(t);
+      cell[5].appendChild(x);
+      x = document.createElement("BUTTON");
+      x.classList.add("update");
+      x.setAttribute("id", "update");
+      t = document.createTextNode("Update");
+      x.appendChild(t);
+      cell[5].appendChild(x);
+      cell[5].querySelector(".complete").addEventListener("click", function () {complete(whichButton)})
+      cell[5].querySelector(".update").addEventListener("click", function () {update(whichButton)})
+      tasksarr.taskarr[whichButton].Incomplete = "Incomplete"
+    }
 
       else {
         cell[0].innerHTML = "Complete";
@@ -238,20 +256,19 @@ function complete(whichButton) {
 // check if background red and change to white as task complete        
         if (cell[0].style.backgroundColor=="rgb(255, 0, 0)") {
           // select row quicker  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-            cell[0].style.backgroundColor = "#FFFFFF";
-            cell[1].style.backgroundColor = "#FFFFFF";
-            cell[2].style.backgroundColor = "#FFFFFF";
-            cell[3].style.backgroundColor = "#FFFFFF";
-            cell[4].style.backgroundColor = "#FFFFFF";
-            cell[5].style.backgroundColor = "#FFFFFF";
+          for (i=0; i==5; i++){  
+            cell[i].style.backgroundColor = "#FFFFFF";
           }
+        }  
         var x = document.createElement("BUTTON");
         x.classList.add("incomplete");
+        x.setAttribute("id", "incomplete");
         var t = document.createTextNode("Incomplete");
         x.appendChild(t);
         cell[5].appendChild(x);
         x = document.createElement("BUTTON");
         x.classList.add("delete"); 
+        x.setAttribute("id", "delete");
         t = document.createTextNode("Delete");
         x.appendChild(t);
         cell[5].appendChild(x);
@@ -262,12 +279,9 @@ function complete(whichButton) {
     }
     if (list=="Closed" || list=="Open"){
           // select row quicker  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-      cell[0].style.display = "None";
-      cell[1].style.display = "None";
-      cell[2].style.display = "None";
-      cell[3].style.display = "None";
-      cell[4].style.display = "None";
-      cell[5].style.display = "None";
+      for (i=0; i==5; i++){  
+        cell[i].style.display = "None";
+      } 
     }
 // update local store
     localStorage.clear();
@@ -288,11 +302,13 @@ function update(whichButton) {
   document.getElementById("Open").style.display = "None";
   document.getElementById("Closed").style.display = "None";
   document.getElementById("All").style.display = "None";
-  // document.querySelectorAll(".complete");[0].style.visibility = 'hidden';
-  // document.querySelectorAll(".update")[0].style.visibility = 'hidden';
-  // document.querySelectorAll(".delete")[0].style.visibility = 'hidden';
-  // document.querySelectorAll(".incomplete")[0].style.visibility = 'hidden';
-// add value to input update task
+// hides action cells would be better to hide button <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+  for(let i=1; tasksarr.taskarr.length+1 > i; i++) {
+    var cell = document.getElementById("task-table").rows[i].cells;
+    cell[5].style.display = "None";
+  }
+
+  // add value to input update task
   document.getElementById('newTask').value= tasksarr.taskarr[x].Task;
   document.getElementById('update').value= tasksarr.taskarr[x].update;
   document.getElementById('startDate').value= tasksarr.taskarr[x].startDate;
@@ -314,6 +330,11 @@ function cancelButton() {
   document.getElementById("Open").style.display = "inline-flex";
   document.getElementById("Closed").style.display = "inline-flex";
   document.getElementById("All").style.display = "inline-flex";
+// show action cells would be better to show button <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+  for(let i=1; tasksarr.taskarr.length+1 > i; i++) {
+    var cell = document.getElementById("task-table").rows[i].cells;
+    cell[5].style.display = "inline-flex";
+  }
   inputValueReset()
 }
 
@@ -321,7 +342,7 @@ function saveButton(x) {
   console.log("save " + x)
   x=x+1
   console.log("save " + x)
-//write change to table
+// write change to table
   var cell = document.getElementById("task-table").rows[x].cells;
   cell[1].innerHTML = document.getElementById("newTask").value,
   cell[2].innerHTML = document.getElementById("update").value,
@@ -334,16 +355,15 @@ function saveButton(x) {
   tasksarr.taskarr[x].update = document.getElementById("update").value,
   tasksarr.taskarr[x].startDate = document.getElementById("startDate").value,
   tasksarr.taskarr[x].completeDate = document.getElementById("completeDate").value 
-// change value to default and hidden and reshow to be in New task screen
-  const  saveButtonEl = document.getElementById("saveButton");
-  saveButtonEl.removeEventListener("click",  function () {saveButton(x)})
-  const cancelButtonEl = document.getElementById("cancelButton");
-  cancelButtonEl.removeEventListener("click",  function () {cancelButton()})
+// change value to default and hide and reshow to be in New task screen
   localStorage.clear();
   localStorage.setItem("tasksarr", JSON.stringify(tasksarr));
-  cancelButton()
-  clearTable() 
-  drawTable(tasksarr)
+// Refresh the page to fix update bug when change 2nd update must be a better way<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+location.reload();
+// remove 2 line above and make 3 lines beloiw if fix bug
+// cancelButton()
+// clearTable() 
+// drawTable(tasksarr)
 }
 
 // Delete Task
