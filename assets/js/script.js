@@ -41,7 +41,7 @@ inputValueReset()
 function inputValueReset(){
 //Gets today and put in correct format
   date = dateRetieve(Number(0))
-  date2 = dateRetieve(Number(7)) //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+  date2 = dateRetieve(Number(7))
   console.log(date2)
 
 // Clear input Values to deafult 
