@@ -41,7 +41,9 @@ inputValueReset()
 function inputValueReset(){
 //Gets today and put in correct format
   date = dateRetieve(Number(0))
-  date2 = dateRetieve(Number(7))
+  date2 = dateRetieve(Number(7)) //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+  console.log(date2)
+
 // Clear input Values to deafult 
   document.getElementById("complete").value= "Incomplete";
   document.getElementById("newTask").value= "";
@@ -53,11 +55,40 @@ function inputValueReset(){
 
 // retieve date and format and add number of days requested
 function dateRetieve(addDays){
-  var now = new Date();
-  const month = now.getMonth()+1;
-  const day = now.getDate()+Number(addDays);
-  const year = now.getFullYear();
-  return year+"-"+month+"-"+day;
+  var now = new Date();  
+  var month = now.getMonth()+1;
+  var day = now.getDate()+Number(addDays);
+  var year = now.getFullYear();
+  if (day >=28 && month == 2) { 
+    month = month + 1
+    day = day -28
+  }
+  else {
+    if (month == 4 || month == 6 || month == 9 || month == 11) {
+      if (day>=30) {
+        month=month+1
+        day = day -30
+      }
+    }
+    else {
+      if (day>=31) { 
+        month = month + 1
+        if (month == 13){month = 1}
+        day = day -31
+      }
+    }
+  }
+  if (year<10){
+    year = "0"+ year
+  }
+  if (month<10) {
+    month= "0"+ month
+  }
+  if (day<10) {
+    day= "0" +day
+  }
+  
+  return year + "-" + month + "-"+ day;
 }
 
 // Search function
@@ -292,22 +323,27 @@ function drawTable(obj) {
   localStorage.setItem("tasksarr", JSON.stringify(tasksarr));
 } 
 
-
 // Swap Incomplete <> Complete
 function complete(whichButton) {
   var table = document.getElementById("task-table");
   todayDate=dateRetieve(0)
-    // change array cell 0 between Incomplete and complete and add
+// check color of buton to pick if to print all closed open
+  if (document.getElementById("All").style.backgroundColor == "red"){list="All"}
+  if (document.getElementById("Open").style.backgroundColor == "red"){list="Open"}
+  if (document.getElementById("Closed").style.backgroundColor == "red"){list="Closed"}
+// change array cell 0 between Incomplete and complete and add
     rowToChange = Number(whichButton)+1
     var cell = document.getElementById("task-table").rows[rowToChange].cells;
+
     if (cell[0].innerHTML == "Complete") {
       cell[0].innerHTML = "Incomplete";
       cell[5].innerHTML ="";
 // check if background should be red as change to task Incomplete      
       if (tasksarr.taskarr[whichButton].completeDate<todayDate) {
         // select row quicker  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-        for (i=0; i==5; i++){  
-          cell[i].style.backgroundColor = "#ff0000";
+        for (j=0; j<=5; j++){ 
+          console.log("false"+j) 
+          cell[j].style.backgroundColor = "rgb(255, 0, 0)";
         }
       }
       var x = document.createElement("BUTTON");
@@ -333,8 +369,9 @@ function complete(whichButton) {
 // check if background red and change to white as task complete        
         if (cell[0].style.backgroundColor=="rgb(255, 0, 0)") {
           // select row quicker  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-          for (i=0; i==5; i++){  
-            cell[i].style.backgroundColor = "#FFFFFF";
+          for (j=0; j<=5; j++){  
+            console.log("true"+j)
+            cell[j].style.backgroundColor = "rgb(255, 255, 255)";
           }
         }  
         var x = document.createElement("BUTTON");
@@ -356,8 +393,8 @@ function complete(whichButton) {
     }
     if (list=="Closed" || list=="Open"){
           // select row quicker  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-      for (i=0; i==5; i++){  
-        cell[i].style.display = "None";
+      for (j=0; j<=5; j++){  
+        cell[j].style.display = "None";
       } 
     }
 // update local store
@@ -433,7 +470,7 @@ function saveButton(x) {
   localStorage.setItem("tasksarr", JSON.stringify(tasksarr));
 // Refresh the page to fix update bug when change 2nd update must be a better way<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 location.reload();
-// remove 2 line above and make 3 lines beloiw if fix bug
+// remove 2 line above and make 3 lines below if fix bug
 // cancelButton()
 // clearTable() 
 // drawTable(tasksarr)
