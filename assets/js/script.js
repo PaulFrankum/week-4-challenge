@@ -42,7 +42,6 @@ function inputValueReset(){
 //Gets today and put in correct format
   date = dateRetieve(Number(0))
   date2 = dateRetieve(Number(7))
-  console.log(date2)
 
 // Clear input Values to deafult 
   document.getElementById("complete").value= "Incomplete";
@@ -73,7 +72,10 @@ function dateRetieve(addDays){
     else {
       if (day>=31) { 
         month = month + 1
-        if (month == 13){month = 1}
+        if (month == 13){
+          month = 1
+          year = year + 1
+        }
         day = day -31
       }
     }
